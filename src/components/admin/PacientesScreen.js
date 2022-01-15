@@ -1,0 +1,104 @@
+import { faHistory } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { startGetPacientes } from "../../actions/admin";
+
+export const PacientesScreen = () => {
+    const { loading } = useSelector((state) => state.ui);
+    const { pacientes } = useSelector((state) => state.admin);
+    const dispatch = useDispatch();
+    useEffect(() => {
+        dispatch(startGetPacientes());
+    }, []);
+
+    if (loading) {
+        return <div className="loader">Loading...</div>;
+    }
+
+    return (
+        <section className="py-4">
+            <div className="w-full mb-12 xl:mb-0 px-4 mx-auto">
+                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
+                    <div className="rounded-t mb-0 px-4 py-3 border-0">
+                        <div className="flex flex-wrap items-center">
+                            <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+                                <h3 className="font-semibold text-base text-blueGray-700">
+                                    Pacientes
+                                </h3>
+                            </div>
+
+                            <input
+                                // onChange={handleInputChange}
+                                className="p-3 border border-gray-400 rounded-md focus:outline-none focus:outline-blue-400 mt-3 md:mt-0 w-full md:w-auto"
+                                name="search"
+                                type="search"
+                                placeholder="Buscar Paciente"
+                                autoComplete="off"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="block w-full overflow-x-auto">
+                        <table className="items-center bg-transparent w-full border-collapse ">
+                            <thead>
+                                <tr>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Nombre
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Apellido Paterno
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Apellido Materno
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Sexo
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Fecha de nacimiento
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-center">
+                                        Historial
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {pacientes?.map((paciente) => {
+                                    return (
+                                        <tr className="hover:bg-gray-200">
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
+                                                {paciente?.nombre}
+                                            </td>
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
+                                                {paciente?.ap_paterno}
+                                            </td>
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
+                                                {paciente?.ap_materno}
+                                            </td>
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
+                                                {paciente?.sexo === "M"
+                                                    ? "Hombre"
+                                                    : "Mujer"}
+                                            </td>
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
+                                                {paciente?.f_nacimiento}
+                                            </td>
+                                            <td className="text-center">
+                                                <FontAwesomeIcon
+                                                    className="mx-2 text-blue-500"
+                                                    icon={faHistory}
+                                                />
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    );
+};
