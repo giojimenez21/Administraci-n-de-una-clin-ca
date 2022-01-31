@@ -71,12 +71,12 @@ const editarUsuario = async (req, res) => {
 };
 
 const obtenerInfoAdmin = async (req, res) => {
-    const { fecha } = req.params;
+    const { fechaInicial, fechaFinal } = req.params;
     try {
         const [info] = await db.query(
             `SELECT * FROM 
                 ( SELECT COUNT(*) as activos FROM users WHERE estado = 'Activo' ) AS infoActivo, ( SELECT COUNT(*) as inactivos FROM users WHERE estado != 'Activo' ) AS infoInactivo, 
-                ( SELECT SUM(s.precio) as ingresos FROM paciente_servicios AS ps JOIN servicios AS s ON (ps.id_servicio = s.id) WHERE ps.fecha = '${fecha}' ) AS infoIngresos, 
+                ( SELECT SUM(s.precio) as ingresos FROM paciente_servicios AS ps JOIN servicios AS s ON (ps.id_servicio = s.id) WHERE ps.fecha BETWEEN '${fechaInicial}' AND '${fechaFinal}' ) AS infoIngresos, 
                 ( SELECT COUNT(*) as numeroPacientes FROM pacientes ) AS infoPacientes;
             `,
             {
@@ -97,7 +97,7 @@ const obtenerInfoAdmin = async (req, res) => {
 };
 
 const obtenerIngresosAdmin = async (req, res) => {
-    const { fecha } = req.params;
+    const { fechaInicial, fechaFinal } = req.params;
     try {
         const info = await db.query(
             `
@@ -113,7 +113,7 @@ const obtenerIngresosAdmin = async (req, res) => {
                 ON
                     (ps.id_servicio = s.id)
                 WHERE
-                    ps.fecha = '${fecha}'
+                    ps.fecha BETWEEN '${fechaInicial}' AND '${fechaFinal}'
             ) AS ingresosTotales,
             (
                 SELECT
@@ -134,7 +134,7 @@ const obtenerIngresosAdmin = async (req, res) => {
                 ON
                     (ps.id_empleado = e.id)
                 WHERE
-                    ps.fecha = '${fecha}'
+                    ps.fecha BETWEEN '${fechaInicial}' AND '${fechaFinal}'
             ) AS info;
             `,
             {

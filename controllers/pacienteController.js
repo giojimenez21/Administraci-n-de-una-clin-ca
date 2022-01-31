@@ -49,10 +49,11 @@ const obtenerHistorialPaciente = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const [info] = await db.query(
+        const info = await db.query(
             `
-            select concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombre, s.nombre as servicio,s.precio as precio, concat('Dr(a)',e.nombre,e.ap_paterno) as doctor from paciente_servicio as ps join pacientes as p on(p.id = ps.id_paciente) join servicios as s on(s.id = ps.id_servicio) join empleados as e on(e.id = ps.id_empleado)
-            where ps.id_paciente = ${id};
+            select concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombre, s.nombre as servicio,s.precio as precio, concat('Dr(a) ',e.nombre,e.ap_paterno) as doctor,fecha as fecha from paciente_servicios as ps join pacientes as p on(p.id = ps.id_paciente) join servicios as s on(s.id = ps.id_servicio) join empleados as e on(e.id = ps.id_empleado)
+            where ps.id_paciente = ${id}
+            order by 5 desc;
         `,
             { type: db.QueryTypes.SELECT }
         );

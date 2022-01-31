@@ -15,9 +15,9 @@ routerAdmin.get("/editUser/:id", obtenerUsuario);
 
 routerAdmin.put("/editUser/:id", editarUsuario);
 
-routerAdmin.get("/infoAdmin/:fecha", obtenerInfoAdmin);
+routerAdmin.get("/infoAdmin/:fechaInicial/:fechaFinal", obtenerInfoAdmin);
 
-routerAdmin.get("/infoIngreso/:fecha", obtenerIngresosAdmin);
+routerAdmin.get("/infoIngreso/:fechaInicial/:fechaFinal", obtenerIngresosAdmin);
 
 module.exports = {
     routerAdmin,
