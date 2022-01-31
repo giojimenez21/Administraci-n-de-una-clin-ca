@@ -99,10 +99,10 @@ const cleanActiveUser = () => ({
     type: types.cleanActiveUser,
 });
 
-export const startGetInfoAdmin = (fecha) => {
+export const startGetInfoAdmin = (fechaInicial, fechaFinal) => {
     return async (dispatch) => {
         dispatch(startLoading());
-        const resp = await fetchConToken(`admin/infoAdmin/${fecha}`, {}, "GET");
+        const resp = await fetchConToken(`admin/infoAdmin/${fechaInicial}/${fechaFinal}`, {}, "GET");
         const body = await resp.json();
 
         if (body.ok) {
@@ -117,19 +117,23 @@ const getInfoAdmin = (info) => ({
     payload: info,
 });
 
-export const startGetIngresosAdmin = (fecha) => {
+export const startGetIngresosAdmin = (fechaInicial, fechaFinal) => {
     return async (dispatch) => {
-        dispatch(startLoading());
-        const resp = await fetchConToken(
-            `admin/infoIngreso/${fecha}`,
-            {},
-            "GET"
-        );
-        const body = await resp.json();
-
-        if (body.ok) {
-            dispatch(getIngresosAdmin(body.info));
-            dispatch(finishLoading());
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                `admin/infoIngreso/${fechaInicial}/${fechaFinal}`,
+                {},
+                "GET"
+            );
+            const body = await resp.json();
+            console.log(body);
+            if (body.ok) {
+                dispatch(getIngresosAdmin(body.info));
+                dispatch(finishLoading());
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 };
@@ -163,3 +167,29 @@ const getPacientes = (pacientes) => ({
     type: types.getPacientes,
     payload: pacientes,
 });
+
+export const startGetHistorial = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                `paciente/getHistorial/${id}`,
+                {},
+                "GET"
+            );
+
+            const body = await resp.json();
+            if (body.ok) {
+                dispatch(getHistorial(body.info));
+                dispatch(finishLoading());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+};
+
+const getHistorial = (historial) => ({
+    type: types.getHistorialPaciente,
+    payload: historial
+})

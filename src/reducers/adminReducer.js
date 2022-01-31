@@ -5,6 +5,7 @@ const initial = {
     activeUser: null,
     ingresosAdmin: [],
     pacientes: [],
+    historialPaciente: []
 };
 
 export const adminReducer = (state = initial, action) => {
@@ -56,6 +57,12 @@ export const adminReducer = (state = initial, action) => {
                 ...state,
                 pacientes: action.payload,
             };
+
+        case types.getHistorialPaciente:
+            return {
+                ...state,
+                historialPaciente: action.payload,
+            }
         default:
             return state;
     }

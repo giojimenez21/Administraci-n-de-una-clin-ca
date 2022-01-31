@@ -48,7 +48,7 @@ export const LoginScreen = () => {
                         />
 
                         <button
-                            className="w-28 p-3 bg-blue-400 rounded text-white font-extrabold hover:bg-blue-500"
+                            className="w-28 p-3 bg-blue-400 rounded text-white font-semibold hover:bg-blue-500"
                             type="submit"
                         >
                             Entrar

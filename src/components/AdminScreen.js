@@ -14,17 +14,18 @@ import { Date } from "./ui/Date";
 
 export const AdminScreen = () => {
     const dispatch = useDispatch();
-    const [fecha, setFecha] = useState(moment().format("YYYY-MM-DD"));
+    const [fechaInicial, setFechaInicial] = useState(moment().format("YYYY-MM-DD"));
+    const [fechaFinal, setFechaFinal] = useState(moment().format("YYYY-MM-DD"));
     const { infoAdmin } = useSelector((state) => state.admin);
-    const { loading } = useSelector((state) => state.ui);
     const { nombre } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        dispatch(startGetInfoAdmin(fecha));
-        localStorage.setItem('fecha-consulta',fecha);
-    }, [fecha]);
+        dispatch(startGetInfoAdmin(fechaInicial, fechaFinal));
+        localStorage.setItem('fecha-consulta-inicial', fechaInicial);
+        localStorage.setItem('fecha-consulta-final', fechaFinal);
+    }, [fechaInicial, fechaFinal, dispatch]);
 
-   
+
 
     return (
         <div className="p-5 grid grid-cols-4 auto-rows-auto gap-4">
@@ -35,7 +36,10 @@ export const AdminScreen = () => {
             </div>
 
             <div className="col-span-4 ml-auto">
-                <Date fecha={fecha} setFecha={setFecha} variant="filled"/>
+                <div className="grid grid-cols-2 auto-rows-auto gap-3">
+                    <Date fecha={fechaInicial} setFecha={setFechaInicial} variant="filled" mensaje="Fecha Inicial" />
+                    <Date fecha={fechaFinal} setFecha={setFechaFinal} variant="filled" mensaje="Fecha Final" />
+                </div>
             </div>
 
             <div className="bg-white rounded-md shadow-md p-5 col-span-4 md:col-span-2 lg:col-span-1">

@@ -7,6 +7,7 @@ import { EditarUsuarioScreen } from "../components/admin/EditarUsuarioScreen";
 import { IngresosScreen } from "../components/admin/IngresosScreen";
 import { ListaEmpleadosScreen } from "../components/admin/ListaEmpleadosScreen";
 import { PacientesScreen } from "../components/admin/PacientesScreen";
+import { HistorialPacienteScreen } from "../components/admin/HistorialPacienteScreen";
 
 export const AdminRoute = () => {
     return (
@@ -36,6 +37,10 @@ export const AdminRoute = () => {
                     <Route
                         path="/admin/pacientes"
                         element={<PacientesScreen />}
+                    />
+                    <Route
+                        path="/admin/pacientes/historial/:id"
+                        element={<HistorialPacienteScreen />}
                     />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>

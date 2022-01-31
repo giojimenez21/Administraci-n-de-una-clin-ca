@@ -5,15 +5,18 @@ import { startGetIngresosAdmin } from "../../actions/admin";
 import { Date } from "../ui/Date";
 
 export const IngresosScreen = () => {
-    const fechaConsulta = localStorage.getItem("fecha-consulta") || undefined;
+    const fechaConsultaInicial = localStorage.getItem("fecha-consulta-inicial") || undefined;
+    const fechaConsultaFinal = localStorage.getItem("fecha-consulta-final") || undefined;
     const dispatch = useDispatch();
-    const [fecha, setFecha] = useState(moment(fechaConsulta).format("YYYY-MM-DD"));
+    const [fechaInicial, setFechaInicial] = useState(moment(fechaConsultaInicial).format("YYYY-MM-DD"));
+    const [fechaFinal, setFechaFinal] = useState(moment(fechaConsultaFinal).format("YYYY-MM-DD"));
     const { ingresosAdmin } = useSelector((state) => state.admin);
     const { loading } = useSelector((state) => state.ui);
 
+
     useEffect(() => {
-        dispatch(startGetIngresosAdmin(fecha));
-    }, [fecha]);
+        dispatch(startGetIngresosAdmin(fechaInicial, fechaFinal));
+    }, [fechaInicial, fechaFinal, dispatch]);
 
     if (loading) {
         return <div className="loader">Loading...</div>;
@@ -25,16 +28,25 @@ export const IngresosScreen = () => {
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">
                     <div className="rounded-t mb-0 px-4 py-3 border-0">
                         <div className="flex flex-wrap items-center">
-                            <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                                <h3 className="font-semibold uppercase text-green-600">
+                            <div className="relative w-full px-2 max-w-full flex-grow flex-1">
+                                <h3 className="font-semibold uppercase text-green-600 mb-3 md:mb-0 text-xl">
                                     Ingresos Totales:
                                     {ingresosAdmin[0]?.ingresosTotales ===
-                                    undefined
+                                        undefined
                                         ? " No hay ingresos "
                                         : ` ${ingresosAdmin[0]?.ingresosTotales} pesos`}
                                 </h3>
                             </div>
-                            <Date fecha={fecha} setFecha={setFecha} />
+                            <div className="grid grid-cols-3 auto-rows-auto gap-2">
+                                <Date fecha={fechaInicial} setFecha={setFechaInicial} />
+                                <Date fecha={fechaFinal} setFecha={setFechaFinal} />
+                                <button
+                                    className="bg-green-500 rounded font-bold text-white"
+                                // onClick={generatePDF}
+                                >
+                                    Descargar PDF
+                                </button>
+                            </div>
                         </div>
                     </div>
 

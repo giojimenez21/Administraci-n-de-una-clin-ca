@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { startUpdateUser } from "../../actions/admin";
 import { useForm } from "../../hooks/useForm";
 
 export const EditarUsuarioScreen = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { activeUser } = useSelector((state) => state.admin);
     const [formValues, handleFormValue] = useForm({
         ...activeUser,

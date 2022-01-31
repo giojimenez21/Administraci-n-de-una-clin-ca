@@ -15,7 +15,9 @@ export const types = {
     getInfoAdmin:'[admin] getInfoAdmin',
     getIngresosAdmin: '[admin] getIngresosAdmin',
     getPacientes:'[admin] get Pacientes',
+    getHistorialPaciente: '[admin] getHistorial',
 
     startLoading: '[ui] Start Loading',
-    finishLoading: '[ui] Finish Loading'
+    finishLoading: '[ui] Finish Loading',
+
 }

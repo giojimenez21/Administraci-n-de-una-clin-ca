@@ -1,10 +1,13 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { cleanInfoAdmin } from "../actions/admin";
 import { startLogout } from "../actions/auth";
 
 export const Navbar = () => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { rol } = useSelector((state) => state.auth);
 
@@ -12,8 +15,18 @@ export const Navbar = () => {
         dispatch(startLogout());
         dispatch(cleanInfoAdmin());
     };
+
+    const goBack = () =>{
+        navigate(-1);
+    }
+
     return (
         <nav className="w-full bg-blue-400 p-4 text-white flex items-center">
+            <FontAwesomeIcon 
+                className="mr-10 cursor-pointer" 
+                icon={faArrowLeft} 
+                onClick={goBack}
+            />
             <Link to="/">
                 <h1 className="text-xl font-semibold">ClinicaAdmin</h1>
             </Link>
@@ -24,8 +37,15 @@ export const Navbar = () => {
                             className="mx-2 rounded-md hover:bg-blue-500 p-4"
                             to="/admin/usuarios"
                         >
+                            Servicios
+                        </Link>
+                        <Link
+                            className="mx-2 rounded-md hover:bg-blue-500 p-4"
+                            to="/admin/usuarios"
+                        >
                             Usuarios
                         </Link>
+
                     </li>
                 ) : (
                     <li>
