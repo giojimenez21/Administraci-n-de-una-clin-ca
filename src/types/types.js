@@ -18,6 +18,8 @@ export const types = {
     getHistorialPaciente: '[admin] getHistorial',
     getServicios: '[admin] getServicios',
     addService: '[admin] addService',
+    lockUser: '[admin] lockUser',
+    unlockUser: '[admin] unlockUser',
 
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',

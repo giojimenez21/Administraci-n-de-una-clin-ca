@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setActiveUser, startGetUsers } from "../../actions/admin";
+import { setActiveUser, startGetUsers, startLockUser, startUnlockUser } from "../../actions/admin";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEdit, faUserSlash } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import { useForm } from "../../hooks/useForm";
+import Swal from "sweetalert2";
 
 export const ListaEmpleadosScreen = () => {
     const [searchValues, handleInputChange] = useForm();
@@ -20,6 +21,27 @@ export const ListaEmpleadosScreen = () => {
     const handleActiveUser = (id) => {
         dispatch(setActiveUser(Number(id)));
     };
+
+    const lockUser = (id, tipoAccion) => {
+        Swal.fire({
+            title: 'Cuidado',
+            text: `¿Está seguro de ${tipoAccion} al usuario?`,
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, acepto.',
+            cancelButtonText: 'Cancelar.'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (tipoAccion === "bloquear") {
+                    dispatch(startLockUser(id));
+                } else {
+                    dispatch(startUnlockUser(id));
+                }
+            }
+        })
+    }
 
     if (loading) {
         return <div className="loader">Loading...</div>;
@@ -78,7 +100,10 @@ export const ListaEmpleadosScreen = () => {
                                         Especialidad
                                     </th>
                                     <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                        Editar
+                                        Estado
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Editar / Bloquear o Desbloquear
                                     </th>
                                 </tr>
                             </thead>
@@ -97,7 +122,7 @@ export const ListaEmpleadosScreen = () => {
                                         return (
                                             <tr
                                                 key={user.id}
-                                                className="hover:bg-gray-200"
+                                                className={`hover:bg-gray-200 ${user.estado == "Inactivo" ? "bg-red-400 text-white hover:text-black" : ""}`}
                                             >
                                                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                     {user.user}
@@ -117,6 +142,9 @@ export const ListaEmpleadosScreen = () => {
                                                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                     {user.especialidad}
                                                 </td>
+                                                <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                    {user.estado}
+                                                </td>
                                                 <td className="text-center">
                                                     <Link
                                                         to={`/admin/editar/${user.id}`}
@@ -127,16 +155,15 @@ export const ListaEmpleadosScreen = () => {
                                                         }
                                                     >
                                                         <FontAwesomeIcon
-                                                            className="mx-2 text-blue-500"
+                                                            className={`mx-2 ${user.estado === "Activo" ? "text-blue-500" : "text-white"}`}
                                                             icon={faEdit}
                                                         />
                                                     </Link>
-                                                    {/* <Link to="#">
-                                                        <FontAwesomeIcon
-                                                            className="mx-2 text-red-500"
-                                                            icon={faTrashAlt}
-                                                        />
-                                                    </Link> */}
+                                                    <FontAwesomeIcon
+                                                        className={`mx-2 cursor-pointer ${user.estado === "Activo" ? "text-red-500" : "text-green-500"}`}
+                                                        icon={faUserSlash}
+                                                        onClick={() => lockUser(user.id, `${user.estado === "Activo" ? "bloquear" : "desbloquear"}`)}
+                                                    />
                                                 </td>
                                             </tr>
                                         );

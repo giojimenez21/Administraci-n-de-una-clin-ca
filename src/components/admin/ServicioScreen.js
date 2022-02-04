@@ -39,9 +39,9 @@ export const ServicioScreen = () => {
 
     return (
         <div className='grid grid-cols-12 gap-2 auto-rows-auto'>
-            <div className='w-full h-full mx-auto bg-white my-4 p-5 rounded-lg shadow-lg text-lg col-span-12 md:col-span-4 md:h-96 '>
+            <div className='w-full h-full mx-auto bg-white my-4 p-5 rounded-lg shadow-lg text-lg col-span-12 lg:col-span-3 md:h-96 '>
                 <div className='h-full'>
-                    <div className='w-full p-4 bg-red-300 border-2 border-red-400 rounded-lg text-white font-semibold text-center' hidden={alerta}>
+                    <div className='w-full p-2 bg-red-300 border-2 border-red-400 rounded-lg text-white font-semibold text-center' hidden={alerta}>
                         <p>Error, complete todos los campos.</p>
                     </div>
                     <h1 className='text-center text-2xl font-bold mb-4 text-green-500'>Agregar servicio</h1>
@@ -52,12 +52,12 @@ export const ServicioScreen = () => {
                     </div>
                 </div>
             </div>
-            <div className='mx-auto w-full bg-white my-4 p-4 rounded-lg shadow-lg text-lg col-span-12 md:col-span-8'>
+            <div className='mx-auto w-full bg-white my-4 p-4 rounded-lg shadow-lg text-lg col-span-12 lg:col-span-9'>
                 <h1 className='text-center text-2xl font-bold mb-4'>Servicios Disponibles</h1>
                 {
                     servicios?.map((servicio) => {
                         return (
-                            <div className='w-full flex justify-center items-center p-4 border-b-2' key={servicio?.id}>
+                            <div className='w-full flex justify-center items-center p-4 border-b-2 hover:bg-gray-200' key={servicio?.id}>
                                 <FontAwesomeIcon
                                     className="text-blue-500 text-4xl mr-3"
                                     icon={faHospital}

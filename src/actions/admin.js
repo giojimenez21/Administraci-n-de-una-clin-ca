@@ -239,8 +239,62 @@ export const startAddService = (servicio) => {
     }
 }
 
-const addService = (servicio) =>({
+const addService = (servicio) => ({
     type: types.addService,
     payload: servicio
+})
+
+export const startLockUser = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                `admin/blockUser/${id}`,
+                {},
+                "PUT"
+            );
+
+            const body = await resp.json();
+            if (body.ok) {
+                dispatch(lockUser(id));
+                dispatch(finishLoading());
+                Swal.fire('Bloqueado', 'El usuario fue bloqueado con exito', 'info');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const lockUser = (id) => ({
+    type: types.lockUser,
+    payload: id
+})
+
+export const startUnlockUser = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                `admin/activateUser/${id}`,
+                {},
+                "PUT"
+            );
+
+            const body = await resp.json();
+            if (body.ok) {
+                dispatch(unlockUser(id));
+                dispatch(finishLoading());
+                Swal.fire('Activado', 'El usuario fue activado con exito', 'info');
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const unlockUser = (id) => ({
+    type: types.unlockUser,
+    payload: id
 })
 

@@ -76,6 +76,27 @@ export const adminReducer = (state = initial, action) => {
                 ...state,
                 servicios: [action.payload, ...state.servicios]
             }
+
+        case types.lockUser:
+            return{
+                ...state,
+                users: state.users.map(user =>{
+                    if(user.id == action.payload){
+                        user.estado = "Inactivo"
+                    }
+                    return user;
+                })
+            }
+        case types.unlockUser:
+            return{
+                ...state,
+                users: state.users.map(user =>{
+                    if(user.id == action.payload){
+                        user.estado = "Activo"
+                    }
+                    return user;
+                })
+            }
         default:
             return state;
     }
