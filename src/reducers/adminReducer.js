@@ -5,7 +5,8 @@ const initial = {
     activeUser: null,
     ingresosAdmin: [],
     pacientes: [],
-    historialPaciente: []
+    historialPaciente: [],
+    servicios:[]
 };
 
 export const adminReducer = (state = initial, action) => {
@@ -62,6 +63,18 @@ export const adminReducer = (state = initial, action) => {
             return {
                 ...state,
                 historialPaciente: action.payload,
+            }
+
+        case types.getServicios:
+            return {
+                ...state,
+                servicios: action.payload
+            }
+
+        case types.addService:
+            return{
+                ...state,
+                servicios: [action.payload, ...state.servicios]
             }
         default:
             return state;

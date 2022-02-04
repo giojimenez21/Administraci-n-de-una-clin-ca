@@ -37,13 +37,13 @@ export const Navbar = () => {
                             className="mx-2 rounded-md hover:bg-blue-500 p-4"
                             to="/admin/usuarios"
                         >
-                            Servicios
+                            Usuarios
                         </Link>
                         <Link
                             className="mx-2 rounded-md hover:bg-blue-500 p-4"
-                            to="/admin/usuarios"
+                            to="/admin/servicios"
                         >
-                            Usuarios
+                            Servicios
                         </Link>
 
                     </li>

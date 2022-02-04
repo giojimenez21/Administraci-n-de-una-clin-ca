@@ -59,7 +59,6 @@ export const startSetActiveUser = (id) => {
             const body = await resp.json();
 
             if (body.ok) {
-                console.log(body);
                 dispatch(setActiveUser(body.usuario));
             }
         } catch (error) {
@@ -127,7 +126,6 @@ export const startGetIngresosAdmin = (fechaInicial, fechaFinal) => {
                 "GET"
             );
             const body = await resp.json();
-            console.log(body);
             if (body.ok) {
                 dispatch(getIngresosAdmin(body.info));
                 dispatch(finishLoading());
@@ -192,4 +190,57 @@ export const startGetHistorial = (id) => {
 const getHistorial = (historial) => ({
     type: types.getHistorialPaciente,
     payload: historial
+});
+
+export const startGetServicios = () => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                'admin/getServicios',
+                {},
+                "GET"
+            );
+
+            const body = await resp.json();
+            if (body.ok) {
+                dispatch(getServicios(body.servicios));
+                dispatch(finishLoading());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const getServicios = (servicios) => ({
+    type: types.getServicios,
+    payload: servicios
 })
+
+export const startAddService = (servicio) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoading());
+            const resp = await fetchConToken(
+                'admin/addServicios',
+                servicio,
+                "POST"
+            );
+
+            const body = await resp.json();
+            if (body.ok) {
+                dispatch(addService(servicio));
+                dispatch(finishLoading());
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const addService = (servicio) =>({
+    type: types.addService,
+    payload: servicio
+})
+
