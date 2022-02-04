@@ -130,7 +130,7 @@ const obtenerMedicos = async (req, res) => {
     try {
         const infoUser = await db.query(
             `
-            select e.id,u.user,e.nombre,e.ap_paterno,e.ap_materno,e.f_nacimiento,e.especialidad from empleados as e 
+            select e.id,u.user,e.nombre,e.ap_paterno,e.ap_materno,e.f_nacimiento,e.especialidad,u.estado from empleados as e 
             join users as u on(u.id_empleado = e.id) 
         `,
             {

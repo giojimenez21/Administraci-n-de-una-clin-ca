@@ -10,6 +10,9 @@ const User = db.define("user", {
     },
     id_empleado:{
         type: Sequelize.DataTypes.INTEGER
+    },
+    estado:{
+        type: Sequelize.DataTypes.STRING
     }
 });
 

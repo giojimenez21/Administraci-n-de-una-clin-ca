@@ -67,7 +67,7 @@ const crearUsuario = async (req, res) => {
 const loginUsuario = async (req, res) => {
     const { user, password } = req.body;
     try {
-        let usuario = await User.findOne({ where: { user } });
+        let usuario = await User.findOne({ where: { user, estado:"Activo" } });
 
         if (!usuario) {
             return res.json({

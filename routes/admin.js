@@ -4,6 +4,10 @@ const {
     obtenerUsuario,
     obtenerInfoAdmin,
     obtenerIngresosAdmin,
+    getServicios,
+    addServicios,
+    bloquearUsuario,
+    activarUsuario,
 } = require("../controllers/adminController");
 
 const { validarJWT } = require("../middlewares/validarJWT");
@@ -15,9 +19,17 @@ routerAdmin.get("/editUser/:id", obtenerUsuario);
 
 routerAdmin.put("/editUser/:id", editarUsuario);
 
+routerAdmin.put("/blockUser/:id", bloquearUsuario);
+
+routerAdmin.put("/activateUser/:id", activarUsuario);
+
 routerAdmin.get("/infoAdmin/:fechaInicial/:fechaFinal", obtenerInfoAdmin);
 
 routerAdmin.get("/infoIngreso/:fechaInicial/:fechaFinal", obtenerIngresosAdmin);
+
+routerAdmin.get("/getServicios", getServicios)
+
+routerAdmin.post("/addServicios", addServicios)
 
 module.exports = {
     routerAdmin,

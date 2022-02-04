@@ -1,5 +1,6 @@
 const { User } = require("../models/User");
 const { Empleado } = require("../models/Empleado");
+const { Servicio } = require("../models/Servicio");
 const bcrypt = require("bcryptjs");
 const { db } = require("../config/db");
 
@@ -69,6 +70,38 @@ const editarUsuario = async (req, res) => {
         });
     }
 };
+
+const bloquearUsuario = async(req, res) => {
+    const { id } = req.params;
+    try {
+        await User.update({ estado: "Inactivo" }, { where: { id_empleado: id } });
+        return res.json({
+            ok: true,
+            msg: "Usuario Inhabilitado"
+        })
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error
+        })
+    }
+}
+
+const activarUsuario = async(req, res) => {
+    const { id } = req.params;
+    try {
+        await User.update({ estado: "Activo" }, { where: { id_empleado: id } });
+        return res.json({
+            ok: true,
+            msg: "Usuario Activado"
+        })
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error
+        })
+    }
+}
 
 const obtenerInfoAdmin = async (req, res) => {
     const { fechaInicial, fechaFinal } = req.params;
@@ -154,9 +187,43 @@ const obtenerIngresosAdmin = async (req, res) => {
     }
 };
 
+const getServicios = async (req, res) => {
+    try {
+
+        const servicios = await Servicio.findAll();
+        return res.json({
+            ok: true,
+            servicios
+        })
+
+    } catch (error) {
+        return res.json(error);
+    }
+}
+
+const addServicios = async (req, res) => {
+    const { nombre, precio } = req.body;
+    try {
+        await Servicio.create({ nombre, precio });
+        return res.json({
+            ok: true,
+            msg: 'Servicio creado'
+        })
+
+    } catch (error) {
+        return res.json(error);
+    }
+}
+
+
+
 module.exports = {
     obtenerUsuario,
     editarUsuario,
     obtenerInfoAdmin,
     obtenerIngresosAdmin,
+    getServicios,
+    addServicios,
+    bloquearUsuario,
+    activarUsuario
 };
