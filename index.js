@@ -9,6 +9,7 @@ const { routerAdmin } = require("./routes/admin");
 
 const app = express();
 
+
 db.authenticate()
     .then(() => console.log("Base conectada"))
     .catch((e) => console.log(e));
@@ -20,6 +21,10 @@ app.listen(process.env.PORT, () => {
 app.use(cors());
 
 app.use(express.json());
+
+app.set('view engine', 'pug');
+
+app.use(express.static('public'));
 
 app.use("/user", router);
 

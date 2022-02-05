@@ -3,6 +3,7 @@ const { Empleado } = require("../models/Empleado");
 const { Servicio } = require("../models/Servicio");
 const bcrypt = require("bcryptjs");
 const { db } = require("../config/db");
+const { generarPDF } = require("../middlewares/generarPDF");
 
 const obtenerUsuario = async (req, res) => {
     try {
@@ -71,7 +72,7 @@ const editarUsuario = async (req, res) => {
     }
 };
 
-const bloquearUsuario = async(req, res) => {
+const bloquearUsuario = async (req, res) => {
     const { id } = req.params;
     try {
         await User.update({ estado: "Inactivo" }, { where: { id_empleado: id } });
@@ -87,7 +88,7 @@ const bloquearUsuario = async(req, res) => {
     }
 }
 
-const activarUsuario = async(req, res) => {
+const activarUsuario = async (req, res) => {
     const { id } = req.params;
     try {
         await User.update({ estado: "Activo" }, { where: { id_empleado: id } });
@@ -215,6 +216,78 @@ const addServicios = async (req, res) => {
     }
 }
 
+const generarFacturaIngresos = async(req, res) => {
+    const { fechaInicial, fechaFinal } = req.params;
+    try {
+        const info = await db.query(
+            `
+            SELECT
+                *
+            FROM
+                (
+                SELECT
+                    SUM(s.precio) AS ingresosTotales
+                FROM
+                    paciente_servicios AS ps
+                JOIN servicios AS s
+                ON
+                    (ps.id_servicio = s.id)
+                WHERE
+                    ps.fecha BETWEEN '${fechaInicial}' AND '${fechaFinal}'
+            ) AS ingresosTotales,
+            (
+                SELECT
+                    ps.id AS id,
+                    p.nombre AS paciente,
+                    s.nombre AS servicio,
+                    s.precio AS precio,
+                    e.nombre AS doctor
+                FROM
+                    paciente_servicios AS ps
+                JOIN pacientes AS p
+                ON
+                    (ps.id_paciente = p.id)
+                JOIN servicios AS s
+                ON
+                    (ps.id_servicio = s.id)
+                JOIN empleados AS e
+                ON
+                    (ps.id_empleado = e.id)
+                WHERE
+                    ps.fecha BETWEEN '${fechaInicial}' AND '${fechaFinal}'
+            ) AS info;
+            `,
+            {
+                type: db.QueryTypes.SELECT,
+            }
+        );
+        res.render('ingresos', {
+            fechaInicial,
+            fechaFinal,
+            info
+        });
+
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error
+        })
+    }
+}
+
+const descargarFacturaIngresos = async(req,res) =>{
+    const {fechaInicial, fechaFinal} = req.params;
+    try {
+        const pdf = await generarPDF(`http://localhost:4000/admin/facturaIngresos/${fechaInicial}/${fechaFinal}`);
+        res.contentType('application/pdf');
+        return res.send(pdf);
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error
+        })
+    }
+}
 
 
 module.exports = {
@@ -225,5 +298,7 @@ module.exports = {
     getServicios,
     addServicios,
     bloquearUsuario,
-    activarUsuario
+    activarUsuario,
+    generarFacturaIngresos,
+    descargarFacturaIngresos
 };
