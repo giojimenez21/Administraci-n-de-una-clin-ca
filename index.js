@@ -6,6 +6,7 @@ const { db } = require("./config/db");
 const { router } = require("./routes/user");
 const { routerPaciente } = require("./routes/paciente");
 const { routerAdmin } = require("./routes/admin");
+const { routerPDF } = require("./routes/pdf");
 
 const app = express();
 
@@ -31,3 +32,5 @@ app.use("/user", router);
 app.use("/paciente", routerPaciente);
 
 app.use("/admin", routerAdmin);
+
+app.use("/pdf", routerPDF);

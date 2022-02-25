@@ -1,0 +1,14 @@
+extends ./layout/index.pug
+block contenido
+    if(info.length != 0)
+        p.text-md.mb-5.mx-8 Historial del paciente: #{info[0].nombre}
+        .mx-auto.w-full
+            each paciente in info
+                .border-b-2.mx-8.my-6
+                    p #[strong Servicio:] #{paciente.servicio}
+                    p #[strong Precio:] #{paciente.precio}
+                    p #[strong Doctor:] #{paciente.doctor}
+                    p #[strong Fecha:] #{paciente.fecha}
+                
+    else 
+        p.text-xl.mb-5.p-4 El paciente aun no tiene historial

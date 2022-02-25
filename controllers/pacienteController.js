@@ -1,8 +1,6 @@
-const { Sequelize } = require("sequelize");
 const { db } = require("../config/db");
 const { Agenda } = require("../models/Agenda");
 const { Consultas } = require("../models/Consultas");
-const { Empleado } = require("../models/Empleado");
 const { Paciente } = require("../models/Paciente");
 const { PacienteServicio } = require("../models/PacienteServicio");
 
@@ -10,7 +8,7 @@ const crearPaciente = async (req, res) => {
     const { name, apellido1, apellido2, sexo, fecha_nacimiento } = req.body;
 
     try {
-        const nuevoPaciente = await Paciente.create({
+        await Paciente.create({
             nombre: name,
             ap_paterno: apellido1,
             ap_materno: apellido2,
@@ -89,7 +87,7 @@ const nuevoServicioPaciente = async (req, res) => {
             { type: db.QueryTypes.SELECT }
         );
         console.log(info);
-        
+
         return res.json({
             ok: true,
             info,
@@ -139,7 +137,7 @@ const obtenerMedicos = async (req, res) => {
         );
         return res.json({
             ok: true,
-            medicos:infoUser,
+            medicos: infoUser,
         });
     } catch (error) {
         return res.json({
@@ -191,7 +189,7 @@ const nuevaCitaAgenda = async (req, res) => {
     }
 };
 
-const eliminarCitaAgenda = async(req, res) => {
+const eliminarCitaAgenda = async (req, res) => {
     const { fechaCita } = req.params;
     try {
         await Agenda.destroy({
@@ -202,7 +200,7 @@ const eliminarCitaAgenda = async(req, res) => {
             ok: true,
             msg: 'Cita eliminada.'
         });
-        
+
     } catch (error) {
         return res.json({
             ok: false,
