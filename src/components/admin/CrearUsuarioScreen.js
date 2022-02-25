@@ -107,7 +107,7 @@ export const CrearUsuarioScreen = () => {
 
                     <div className="flex justify-center col-span-2">
                         <button
-                            className="block rounded-md p-4 bg-green-400 hover:bg-green-600"
+                            className="block rounded-md p-4 bg-green-400 text-white font-semibold hover:bg-green-600"
                             type="submit"
                         >
                             Crear usuario

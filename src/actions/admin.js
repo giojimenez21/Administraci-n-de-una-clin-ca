@@ -1,7 +1,8 @@
+import download from "downloadjs";
 import Swal from "sweetalert2";
 import { fetchConToken } from "../helpers/fetch";
 import { types } from "../types/types";
-import { finishLoading, startLoading } from "./ui";
+import { finishLoading, finishLoadingPDF, startLoading, startLoadingPDF } from "./ui";
 
 export const startGetUsers = () => {
     return async (dispatch) => {
@@ -297,4 +298,39 @@ const unlockUser = (id) => ({
     type: types.unlockUser,
     payload: id
 })
+
+export const generatePDFIngresos = (fechaInicial, fechaFinal) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoadingPDF());
+            const resp = await fetchConToken(
+                `pdf/descargarFacturaIngresos/${fechaInicial}/${fechaFinal}`,
+                {},
+                "GET"
+            );
+            const pdf = await resp.blob();
+            dispatch(finishLoadingPDF());
+            download(new Blob([pdf]), `ingresos-${fechaInicial}-${fechaFinal}.pdf`, 'text/pdf');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+export const generatePDFHistorial = (id) => {
+    return async (dispatch) => {
+        try {
+            dispatch(startLoadingPDF());
+            const resp = await fetchConToken(
+                `pdf/descargarHistorialPacientePDF/${id}`,
+                {},
+                "GET"
+            );
+            const pdf = await resp.blob();
+            dispatch(finishLoadingPDF());
+            download(new Blob([pdf]), 'Historial.pdf', 'text/pdf');
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
 

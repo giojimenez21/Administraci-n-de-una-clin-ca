@@ -4,9 +4,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { startChecking } from "../actions/auth";
 import { LoginScreen } from "../components/LoginScreen";
 import { AdminRoute } from "./AdminRoute";
-import { DashboardRoute } from "./DashboardRoute";
+import { MedicoRoute } from "./MedicoRoute";
 import { PrivateRoute } from "./PrivateRoute";
 import { PublicRoute } from "./PublicRoute";
+import { RecepcionistaRoute } from "./RecepcionistaRoute";
 
 export const AppRouter = () => {
     const dispatch = useDispatch();
@@ -39,17 +40,6 @@ export const AppRouter = () => {
                         </PublicRoute>
                     }
                 />
-                {rol !== "Admin" && (
-                    <Route
-                        exact
-                        path="/*"
-                        element={
-                            <PrivateRoute>
-                                <DashboardRoute />
-                            </PrivateRoute>
-                        }
-                    />
-                )}
                 {rol === "Admin" && (
                     <Route
                         exact
@@ -57,6 +47,28 @@ export const AppRouter = () => {
                         element={
                             <PrivateRoute>
                                 <AdminRoute />
+                            </PrivateRoute>
+                        }
+                    />
+                )}
+                {rol === "Recepcionista" && (
+                    <Route
+                        exact
+                        path="/*"
+                        element={
+                            <PrivateRoute>
+                                <RecepcionistaRoute />
+                            </PrivateRoute>
+                        }
+                    />
+                )}
+                {rol !== "Admin" && rol !== "Recepcionista" && (
+                    <Route
+                        exact
+                        path="/*"
+                        element={
+                            <PrivateRoute>
+                                <MedicoRoute />
                             </PrivateRoute>
                         }
                     />

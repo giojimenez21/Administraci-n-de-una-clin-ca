@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { MedicoScreen } from "../components/MedicoScreen";
 
-export const DashboardRoute = () => {
+export const MedicoRoute = () => {
     return (
         <>
             <Navbar />

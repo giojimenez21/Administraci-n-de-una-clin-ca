@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 import { useSelector } from 'react-redux';
 
-export const MedicoScreen = () => {
+export const RecepcionistaScreen = () => {
     const { nombre } = useSelector((state) => state.auth);
     return (
         <div className="flex justify-center items-center p-5">
@@ -9,5 +9,5 @@ export const MedicoScreen = () => {
                 <h1 className="text-2xl text-center uppercase font-bold text-gray-600">Bienvenido {nombre}</h1>
             </div>
         </div>
-    );
+    )
 }

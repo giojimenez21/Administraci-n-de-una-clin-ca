@@ -1,7 +1,7 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startGetIngresosAdmin } from "../../actions/admin";
+import { generatePDFIngresos, startGetIngresosAdmin } from "../../actions/admin";
 import { Date } from "../ui/Date";
 
 export const IngresosScreen = () => {
@@ -11,12 +11,17 @@ export const IngresosScreen = () => {
     const [fechaInicial, setFechaInicial] = useState(moment(fechaConsultaInicial).format("YYYY-MM-DD"));
     const [fechaFinal, setFechaFinal] = useState(moment(fechaConsultaFinal).format("YYYY-MM-DD"));
     const { ingresosAdmin } = useSelector((state) => state.admin);
-    const { loading } = useSelector((state) => state.ui);
+    const { loading, loadingPDF } = useSelector((state) => state.ui);
 
 
     useEffect(() => {
         dispatch(startGetIngresosAdmin(fechaInicial, fechaFinal));
     }, [fechaInicial, fechaFinal, dispatch]);
+
+    const generatePDF = (fechaInicial, fechaFinal) => {
+        dispatch(generatePDFIngresos(fechaInicial, fechaFinal));
+    }
+
 
     if (loading) {
         return <div className="loader">Loading...</div>;
@@ -37,14 +42,25 @@ export const IngresosScreen = () => {
                                         : ` ${ingresosAdmin[0]?.ingresosTotales} pesos`}
                                 </h3>
                             </div>
-                            <div className="grid grid-cols-3 auto-rows-auto gap-2">
+                            <div className={
+                                `
+                                        grid auto-rows-auto gap-2
+                                        ${ingresosAdmin[0]?.ingresosTotales === undefined ? "grid-cols-2" : "grid-cols-3"}
+                                    `
+                            }>
                                 <Date fecha={fechaInicial} setFecha={setFechaInicial} />
                                 <Date fecha={fechaFinal} setFecha={setFechaFinal} />
                                 <button
-                                    className="bg-green-500 rounded font-bold text-white"
-                                // onClick={generatePDF}
+                                    className={
+                                        `
+                                                bg-green-500 rounded font-bold text-white 
+                                                ${ingresosAdmin[0]?.ingresosTotales === undefined ? "hidden" : ""}
+                                            `
+                                    }
+                                    onClick={() => generatePDF(fechaInicial, fechaFinal)}
                                 >
-                                    Descargar PDF
+                                    <p className={loadingPDF === true ? "hidden" : ""}>Descargar PDF</p>
+                                    <div className={`loader2 ${loadingPDF === false ? "hidden" : ""}`}>Loading...</div>
                                 </button>
                             </div>
                         </div>
@@ -65,6 +81,9 @@ export const IngresosScreen = () => {
                                     </th>
                                     <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                                         Precio
+                                    </th>
+                                    <th className="px-3 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                                        Fecha
                                     </th>
                                 </tr>
                             </thead>
@@ -87,6 +106,9 @@ export const IngresosScreen = () => {
                                             </td>
                                             <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                 {ingreso?.precio}
+                                            </td>
+                                            <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
+                                                {ingreso?.fecha}
                                             </td>
                                         </tr>
                                     );

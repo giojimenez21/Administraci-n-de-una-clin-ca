@@ -15,7 +15,7 @@ export const Date = ({ fecha, setFecha,variant,mensaje }) => {
                     setFecha(moment(nuevaFecha).format("YYYY-MM-DD"));
                 }}
                 renderInput={(params) => (
-                    <TextField variant={variant} {...params} />
+                    <TextField className="w-full" variant={variant} {...params} />
                 )}
             />
         </LocalizationProvider>

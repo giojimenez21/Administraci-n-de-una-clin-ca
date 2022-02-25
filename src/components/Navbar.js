@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-import React from "react";
+import { faArrowLeft, faBars } from "@fortawesome/free-solid-svg-icons";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { cleanInfoAdmin } from "../actions/admin";
@@ -10,68 +10,94 @@ export const Navbar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { rol } = useSelector((state) => state.auth);
-
+    const menu = useRef("");
     const handleLogout = () => {
         dispatch(startLogout());
         dispatch(cleanInfoAdmin());
     };
 
-    const goBack = () =>{
+    const showMenu = () => {
+        menu.current.classList.toggle('hidden');
+    }
+
+    const goBack = () => {
         navigate(-1);
     }
 
     return (
-        <nav className="w-full bg-blue-400 p-4 text-white flex items-center">
-            <FontAwesomeIcon 
-                className="mr-10 cursor-pointer" 
-                icon={faArrowLeft} 
+        <nav className="w-full bg-blue-400 p-4 text-white flex flex-wrap items-center">
+            <FontAwesomeIcon
+                className="mr-10 cursor-pointer"
+                icon={faArrowLeft}
                 onClick={goBack}
             />
             <Link to="/">
                 <h1 className="text-xl font-semibold">ClinicaAdmin</h1>
             </Link>
-            <ul className="flex mx-2 ml-auto">
-                {rol === "Admin" ? (
-                    <li>
-                        <Link
-                            className="mx-2 rounded-md hover:bg-blue-500 p-4"
-                            to="/admin/usuarios"
-                        >
-                            Usuarios
-                        </Link>
-                        <Link
-                            className="mx-2 rounded-md hover:bg-blue-500 p-4"
-                            to="/admin/servicios"
-                        >
-                            Servicios
-                        </Link>
 
-                    </li>
-                ) : (
-                    <li>
-                        <Link
-                            className="mx-2 rounded-md hover:bg-blue-500 p-4"
-                            to="/medico/pacientes"
-                        >
-                            Pacientes
-                        </Link>
-                        <Link
-                            className="mx-2 rounded-md hover:bg-blue-500 p-4"
-                            to="/medico/agenda"
-                        >
-                            Agenda
-                        </Link>
-                    </li>
-                )}
-            </ul>
-
-            <button
-                className="px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-400"
-                type="submit"
-                onClick={handleLogout}
-            >
-                Salir
+            <button className="px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white block lg:hidden ml-auto" onClick={showMenu}>
+                <FontAwesomeIcon
+                    className="text-white"
+                    icon={faBars}
+                />
             </button>
+
+            <div className="hidden lg:w-auto lg:block ml-auto w-full lg:w-auto" ref={menu}>
+                {rol === "Admin" && (
+                    <ul className="block lg:flex lg:items-center" >
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/">
+                                Inicio
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/admin/usuarios">
+                                Usuarios
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/admin/servicios">
+                                Servicios
+                            </Link>
+                        </li>
+
+                        <button
+                            className="mx-2 px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-400"
+                            type="submit"
+                            onClick={handleLogout}
+                        >
+                            Salir
+                        </button>
+                    </ul>
+                )}
+                {rol === "Recepcionista" && (
+                    <ul className="block lg:flex lg:items-center" >
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/">
+                                Inicio
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/recepcionista/pacientes">
+                                Pacientes
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/recepcionista/agenda">
+                                Agenda
+                            </Link>
+                        </li>
+
+                        <button
+                            className="mx-2 px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-400"
+                            type="submit"
+                            onClick={handleLogout}
+                        >
+                            Salir
+                        </button>
+                    </ul>
+                )}
+            </div>
         </nav>
     );
 };
