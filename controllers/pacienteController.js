@@ -129,8 +129,9 @@ const obtenerMedicos = async (req, res) => {
         const infoUser = await db.query(
             `
             select e.id,u.user,e.nombre,e.ap_paterno,e.ap_materno,e.f_nacimiento,e.especialidad,u.estado from empleados as e 
-            join users as u on(u.id_empleado = e.id) 
-        `,
+            join users as u on(u.id_empleado = e.id)
+            where e.especialidad = 'Doctor';
+            `,
             {
                 type: db.QueryTypes.SELECT,
             }
@@ -166,6 +167,23 @@ const obtenerAgendaDoctor = async (req, res) => {
         });
     }
 };
+
+const obtenerAgendaCompleta = async (req, res) => {
+    try {
+        const agenda = await Agenda.findAll();
+
+        return res.json({
+            ok: true,
+            agenda,
+        });
+
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+}
 
 const nuevaCitaAgenda = async (req, res) => {
     const { fecha, motivo, id_empleado } = req.body;
@@ -219,6 +237,7 @@ module.exports = {
     nuevaConsultaPaciente,
     obtenerMedicos,
     obtenerAgendaDoctor,
+    obtenerAgendaCompleta,
     nuevaCitaAgenda,
     eliminarCitaAgenda,
 };
