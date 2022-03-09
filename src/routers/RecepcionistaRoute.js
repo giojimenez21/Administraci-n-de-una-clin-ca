@@ -5,6 +5,7 @@ import { RecepcionistaScreen } from "../components/RecepcionistaScreen";
 import { PacientesScreen } from "../components/recepcionist/PacientesScreen";
 import { HistorialPacienteScreen } from "../components/admin/HistorialPacienteScreen";
 import { CrearPacienteScreen } from "../components/recepcionist/CrearPacienteScreen";
+import { CalendarScreen } from '../components/ui/CalendarScreen';
 
 export const RecepcionistaRoute = () => {
     return (
@@ -21,12 +22,17 @@ export const RecepcionistaRoute = () => {
 
                     <Route
                         path="/recepcionista/nuevoPaciente"
-                        element={<CrearPacienteScreen/>}
+                        element={<CrearPacienteScreen />}
                     />
 
                     <Route
                         path="/recepcionista/pacientes/historial/:id"
                         element={<HistorialPacienteScreen />}
+                    />
+
+                    <Route
+                        path="/recepcionista/calendar"
+                        element={<CalendarScreen />}
                     />
 
                     <Route path="*" element={<Navigate to="/" />} />

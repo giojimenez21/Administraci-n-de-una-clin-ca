@@ -15,6 +15,14 @@ body {
     background-color: rgb(225, 238, 255);
 }
 
+.calendar-screen {
+    display: flex;
+    flex-flow: column;
+    padding: 1em;
+    height: 100vh;
+    background-color: #ffff;
+}
+
 .loader,
 .loader:before,
 .loader:after {

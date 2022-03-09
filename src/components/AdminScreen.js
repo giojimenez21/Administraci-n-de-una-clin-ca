@@ -37,8 +37,8 @@ export const AdminScreen = () => {
 
             <div className="col-span-4 ml-auto">
                 <div className="grid grid-cols-2 auto-rows-auto gap-3">
-                    <Date fecha={fechaInicial} setFecha={setFechaInicial} variant="filled" mensaje="Fecha Inicial" />
-                    <Date fecha={fechaFinal} setFecha={setFechaFinal} variant="filled" mensaje="Fecha Final" />
+                    <Date fecha={fechaInicial} setFecha={setFechaInicial} variant="outlined" mensaje="Fecha Inicial" />
+                    <Date fecha={fechaFinal} setFecha={setFechaFinal} variant="outlined" mensaje="Fecha Final" />
                 </div>
             </div>
 

@@ -21,6 +21,8 @@ export const types = {
     lockUser: '[admin] lockUser',
     unlockUser: '[admin] unlockUser',
 
+    startGetMedicos: '[recep] getMedicos',
+
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',
     startLoadingPDF: '[ui] Start loading pdf',

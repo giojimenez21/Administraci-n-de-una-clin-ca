@@ -17,6 +17,7 @@ export const CrearPacienteScreen = () => {
     const [fecha_nacimiento, setFecha] = useState();
 
     const { name, apellido1, apellido2, sexo } = formValues;
+    
     const handleSubmit = () => {
         if (name === "" || apellido1 === "" || apellido2 === "" || sexo === "" || fecha_nacimiento === "") {
             Swal.fire("Error", "Debe completar todos los campos", "error");
