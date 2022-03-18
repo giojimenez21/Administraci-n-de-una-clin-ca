@@ -1,7 +1,9 @@
 import {types} from '../types/types';
 
 const initial = {
-    medicos: []
+    medicos: [],
+    activePaciente:{},
+    eventos:[]
 }
 
 export const recepcionistReducer = (state = initial, action) => {
@@ -12,6 +14,23 @@ export const recepcionistReducer = (state = initial, action) => {
                 medicos: action.payload
             }
 
+        case types.createPaciente:
+            return{
+                ...state,
+                activePaciente: action.payload
+            }
+
+        case types.getInfoPaciente:
+            return{
+                ...state,
+                activePaciente: action.payload
+            }
+
+        case types.getAgenda:
+            return{
+                ...state,
+                eventos: action.payload
+            }
         default:
             return state;
     }

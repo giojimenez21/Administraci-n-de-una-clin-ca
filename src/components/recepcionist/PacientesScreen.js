@@ -80,7 +80,7 @@ export const PacientesScreen = () => {
                                     p.nombre.toLowerCase().includes(searchValues.search) || !searchValues.search)
                                     .map((paciente) => {
                                         return (
-                                            <tr className="hover:bg-gray-200">
+                                            <tr className="hover:bg-gray-200" key={paciente?.id}>
                                                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-center">
                                                     {paciente?.nombre}
                                                 </td>
@@ -107,7 +107,7 @@ export const PacientesScreen = () => {
                                                     </Link>
                                                 </td>
                                                 <td className="text-center">
-                                                    <Link to={'/recepcionista/nuevo/'}>
+                                                    <Link to={`/recepcionista/calendar/${paciente?.id}`}>
                                                         <FontAwesomeIcon
                                                             className="mx-2 text-red-500"
                                                             icon={faPlus}

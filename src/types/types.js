@@ -22,6 +22,9 @@ export const types = {
     unlockUser: '[admin] unlockUser',
 
     startGetMedicos: '[recep] getMedicos',
+    createPaciente: '[recep] crearPaciente',
+    getInfoPaciente: '[recep] getInfoPaciente',
+    getAgenda: '[recep] getAgendaCompleta',
 
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',

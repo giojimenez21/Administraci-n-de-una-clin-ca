@@ -6,6 +6,7 @@ import { PacientesScreen } from "../components/recepcionist/PacientesScreen";
 import { HistorialPacienteScreen } from "../components/admin/HistorialPacienteScreen";
 import { CrearPacienteScreen } from "../components/recepcionist/CrearPacienteScreen";
 import { CalendarScreen } from '../components/ui/CalendarScreen';
+import { ServicioPacienteScreen } from "../components/recepcionist/ServicioPacienteScreen";
 
 export const RecepcionistaRoute = () => {
     return (
@@ -31,7 +32,12 @@ export const RecepcionistaRoute = () => {
                     />
 
                     <Route
-                        path="/recepcionista/calendar"
+                        path="/recepcionista/calendar/:id"
+                        element={<ServicioPacienteScreen />}
+                    />
+
+                    <Route
+                        path="/recepcionista/agenda"
                         element={<CalendarScreen />}
                     />
 

@@ -1,12 +1,15 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import { startCrearPaciente } from '../../actions/recep'
 import { useForm } from '../../hooks/useForm'
 import { Date } from '../ui/Date'
 
 export const CrearPacienteScreen = () => {
+    const navigate = useNavigate();
+    const { activePaciente } = useSelector(state => state.recep);
     const dispatch = useDispatch();
     const [formValues, handleChange] = useForm({
         name: "",
@@ -17,14 +20,25 @@ export const CrearPacienteScreen = () => {
     const [fecha_nacimiento, setFecha] = useState();
 
     const { name, apellido1, apellido2, sexo } = formValues;
-    
+
     const handleSubmit = () => {
         if (name === "" || apellido1 === "" || apellido2 === "" || sexo === "" || fecha_nacimiento === "") {
             Swal.fire("Error", "Debe completar todos los campos", "error");
         } else {
-            dispatch(startCrearPaciente({...formValues, fecha_nacimiento}));
+            dispatch(startCrearPaciente({ ...formValues, fecha_nacimiento }));
+            Swal.fire('Paciente creado', 'El paciente fue creado de manera correcta', 'success')
         }
     }
+
+    useEffect(() => {
+        if (activePaciente.id !== undefined) {
+            navigate(`/recepcionista/calendar/${activePaciente.id}`);
+        }
+        return () => {
+            activePaciente.id = undefined;
+        }
+    }, [activePaciente.id]);
+
     return (
         <div className='flex justify-center items-center my-5'>
             <div className='w-full md:w-1/2 bg-white rounded shadow py-5 px-14'>

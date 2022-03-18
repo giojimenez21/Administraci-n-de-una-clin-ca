@@ -7,11 +7,11 @@ import { finishLoading, finishLoadingPDF, startLoading, startLoadingPDF } from "
 export const startGetUsers = () => {
     return async (dispatch) => {
         dispatch(startLoading());
-        const resp = await fetchConToken("paciente/getMedicos", {}, "GET");
+        const resp = await fetchConToken("admin/getUsers", {}, "GET");
         const body = await resp.json();
 
         if (body.ok) {
-            dispatch(getUsers(body.medicos));
+            dispatch(getUsers(body.usuarios));
             dispatch(finishLoading());
         }
     };
