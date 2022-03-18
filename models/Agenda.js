@@ -8,7 +8,10 @@ const Agenda = db.define(
             type: Sequelize.DataTypes.INTEGER,
             primaryKey: true,
         },
-        fecha: {
+        fechaInicio: {
+            type: Sequelize.DataTypes.TIME,
+        },
+        fechaFinal: {
             type: Sequelize.DataTypes.TIME,
         },
         motivo: {
