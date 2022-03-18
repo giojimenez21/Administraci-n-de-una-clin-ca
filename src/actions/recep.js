@@ -1,4 +1,5 @@
 import { fetchConToken } from "../helpers/fetch";
+import { prepararEventos } from "../helpers/prepararEventos";
 import { types } from "../types/types";
 import { finishLoading, startLoading } from "./ui"
 
@@ -75,7 +76,7 @@ export const startGetAgendaCompleta = () => {
             const body = await resp.json();
 
             if (body.ok) {
-                dispatch(getAgenda(body.agenda));
+                dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }
         } catch (error) {
@@ -97,7 +98,7 @@ export const startGetAgendaById = (idDoctor) => {
             const body = await resp.json();
 
             if (body.ok) {
-                dispatch(getAgenda(body.agenda));
+                dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }
         } catch (error) {

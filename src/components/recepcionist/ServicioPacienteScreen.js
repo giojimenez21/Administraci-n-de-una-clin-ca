@@ -1,8 +1,9 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom';
 import { startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
+import { prepararEventos } from '../../helpers/prepararEventos';
 import { useForm } from '../../hooks/useForm';
 import { CalendarScreen } from '../ui/CalendarScreen'
 
@@ -10,7 +11,8 @@ export const ServicioPacienteScreen = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const { loading } = useSelector(state => state.ui);
-    const { medicos } = useSelector(state => state.recep);
+    const { medicos, eventos } = useSelector(state => state.recep);
+    const [eventosCalendar, setEventosCalendar] = useState();
     const [formValues, handleChange] = useForm({
         medico: ""
     });
@@ -25,7 +27,6 @@ export const ServicioPacienteScreen = () => {
         if(medico === "" || medico === "Todos"){
             dispatch(startGetAgendaCompleta());
         }else{
-            
             dispatch(startGetAgendaById(medico));
         }
     }, [medico,dispatch])
@@ -59,7 +60,7 @@ export const ServicioPacienteScreen = () => {
                     </Select>
                 </FormControl>
             </div>
-            <CalendarScreen />
+            <CalendarScreen  eventos={eventos}/>
         </div>
     )
 }

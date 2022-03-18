@@ -15,19 +15,19 @@ moment.locale('es', {
 
 const localizer = momentLocalizer(moment);
 
-export const CalendarScreen = () => {
-	const events = [{
-		id: new Date().getTime(),
-		title: "Operacion",
-		start: moment().toDate(),
-		end: moment().add(5, "hours").toDate(),
-		bgcolor: "#fafafa",
-		notes: "Comprar",
-		user: {
-			_id: "123",
-			name: "Gio",
-		},
-	}]
+export const CalendarScreen = ({eventos}) => {
+	// const events = [{
+	// 	id: new Date().getTime(),
+	// 	title: "Operacion",
+	// 	start: moment().toDate(),
+	// 	end: moment().add(5, "hours").toDate(),
+	// 	bgcolor: "#fafafa",
+	// 	notes: "Comprar",
+	// 	user: {
+	// 		_id: "123",
+	// 		name: "Gio",
+	// 	},
+	// }]
 
 	const openModal = () => {
 		console.log('abremodal');
@@ -38,7 +38,7 @@ export const CalendarScreen = () => {
 		<div className='calendar-screen'>
 			<Calendar
 				localizer={localizer}
-				events={events}
+				events={eventos}
 				startAccessor="start"
 				endAccessor="end"
 				messages={messages}
