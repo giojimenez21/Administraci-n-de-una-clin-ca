@@ -8,6 +8,7 @@ const {
     addServicios,
     bloquearUsuario,
     activarUsuario,
+    obtenerUsuarios,
 } = require("../controllers/adminController");
 
 const { validarJWT } = require("../middlewares/validarJWT");
@@ -16,6 +17,8 @@ const routerAdmin = express.Router();
 routerAdmin.use(validarJWT);
 
 routerAdmin.get("/editUser/:id", obtenerUsuario);
+
+routerAdmin.get("/getUsers", obtenerUsuarios);
 
 routerAdmin.put("/editUser/:id", editarUsuario);
 

@@ -1,5 +1,5 @@
 const express = require('express');
-const { crearPaciente, obtenerPacientes, obtenerHistorialPaciente, nuevoServicioPaciente, nuevaConsultaPaciente, obtenerMedicos, obtenerAgendaDoctor, nuevaCitaAgenda, eliminarCitaAgenda, obtenerAgendaCompleta } = require('../controllers/pacienteController');
+const { crearPaciente, obtenerPacientes, obtenerHistorialPaciente, nuevoServicioPaciente, nuevaConsultaPaciente, obtenerMedicos, obtenerAgendaDoctor, nuevaCitaAgenda, eliminarCitaAgenda, obtenerAgendaCompleta, obtenerPaciente } = require('../controllers/pacienteController');
 const { validarJWT } = require('../middlewares/validarJWT');
 
 const routerPaciente = express.Router();
@@ -9,6 +9,8 @@ routerPaciente.use(validarJWT);
 routerPaciente.post("/new",crearPaciente);
 
 routerPaciente.get("/getPacientes", obtenerPacientes);
+
+routerPaciente.get("/getPaciente/:id", obtenerPaciente);
 
 routerPaciente.get("/getHistorial/:id", obtenerHistorialPaciente);
 

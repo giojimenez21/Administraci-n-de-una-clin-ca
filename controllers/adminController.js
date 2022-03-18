@@ -29,6 +29,29 @@ const obtenerUsuario = async (req, res) => {
     }
 };
 
+const obtenerUsuarios = async (req, res) => {
+    try {
+        const infoUser = await db.query(
+            `
+            select e.id,u.user,e.nombre,e.ap_paterno,e.ap_materno,e.f_nacimiento,e.especialidad,u.estado from empleados as e 
+            join users as u on(u.id_empleado = e.id)
+            `,
+            {
+                type: db.QueryTypes.SELECT,
+            }
+        );
+        return res.json({
+            ok: true,
+            usuarios: infoUser,
+        });
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+};
+
 const editarUsuario = async (req, res) => {
     const { user, password } = req.body;
 
@@ -219,6 +242,7 @@ const addServicios = async (req, res) => {
 
 module.exports = {
     obtenerUsuario,
+    obtenerUsuarios,
     editarUsuario,
     obtenerInfoAdmin,
     obtenerIngresosAdmin,

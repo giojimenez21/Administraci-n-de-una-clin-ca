@@ -8,7 +8,7 @@ const crearPaciente = async (req, res) => {
     const { name, apellido1, apellido2, sexo, fecha_nacimiento } = req.body;
 
     try {
-        await Paciente.create({
+        const paciente = await Paciente.create({
             nombre: name,
             ap_paterno: apellido1,
             ap_materno: apellido2,
@@ -18,7 +18,7 @@ const crearPaciente = async (req, res) => {
 
         return res.json({
             ok: true,
-            msg: 'Paciente creado.'
+            paciente
         });
     } catch (error) {
         return res.json({
@@ -34,6 +34,22 @@ const obtenerPacientes = async (req, res) => {
         return res.json({
             ok: true,
             pacientes,
+        });
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+};
+
+const obtenerPaciente = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const paciente = await Paciente.findOne({ where: { id } })
+        return res.json({
+            ok: true,
+            paciente,
         });
     } catch (error) {
         return res.json({
@@ -240,4 +256,5 @@ module.exports = {
     obtenerAgendaCompleta,
     nuevaCitaAgenda,
     eliminarCitaAgenda,
+    obtenerPaciente
 };
