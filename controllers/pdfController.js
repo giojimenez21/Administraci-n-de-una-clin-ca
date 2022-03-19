@@ -1,8 +1,12 @@
+const fs = require('fs');
+const pug = require('pug');
+const pdf = require('html-pdf');
 const { db } = require("../config/db");
-const { generarPDF } = require("../middlewares/generarPDF");
 
 const generarFacturaIngresos = async (req, res) => {
     const { fechaInicial, fechaFinal } = req.params;
+    let html = "";
+    let reporte;
     try {
         const info = await db.query(
             `
@@ -47,26 +51,30 @@ const generarFacturaIngresos = async (req, res) => {
                 type: db.QueryTypes.SELECT,
             }
         );
-        res.render('ingresos', {
+
+        html = pug.renderFile(`${__dirname}/../views/ingresos.pug`, {
             fechaInicial,
             fechaFinal,
             info
         });
 
-    } catch (error) {
-        return res.json({
-            ok: false,
-            msg: error
-        })
-    }
-}
-
-const descargarFacturaIngresos = async (req, res) => {
-    const { fechaInicial, fechaFinal } = req.params;
-    try {
-        const pdf = await generarPDF(`${process.env.API_URL}/pdf/facturaIngresos/${fechaInicial}/${fechaFinal}`);
-        res.contentType('application/pdf');
-        return res.send(pdf);
+        pdf.create(html, {
+            format: 'Letter',
+            orientation: "portrait",
+            border: {
+                "top": "1cm",
+                "right": "1cm",
+                "bottom": "1cm",
+                "left": "1cm"
+            },
+        }).toFile(`${__dirname}/../reports/reporteIngresos.pdf`, (err) => {
+            if (err) {
+                return console.log(err);
+            }
+            reporte = fs.readFileSync(`${__dirname}/../reports/reporteIngresos.pdf`);
+            res.contentType('application/pdf');
+            return res.send(reporte);
+        });
     } catch (error) {
         return res.json({
             ok: false,
@@ -77,7 +85,8 @@ const descargarFacturaIngresos = async (req, res) => {
 
 const historialPacientePDF = async (req, res) => {
     const { id } = req.params;
-
+    let html = "";
+    let reporte;
     try {
         const info = await db.query(
             `
@@ -88,22 +97,27 @@ const historialPacientePDF = async (req, res) => {
             { type: db.QueryTypes.SELECT }
         );
 
-        res.render('historial', { info });
+        html = pug.renderFile(`${__dirname}/../views/historial.pug`, {
+            info
+        });
 
-    } catch (error) {
-        return res.json({
-            ok: false,
-            msg: error
-        })
-    }
-}
-
-const descargarHistorialPacientePDF = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const pdf = await generarPDF(`${process.env.API_URL}/pdf/historialPacientePDF/${id}`);
-        res.contentType('application/pdf');
-        return res.send(pdf);
+        pdf.create(html, {
+            format: 'Letter',
+            orientation: "portrait",
+            border: {
+                "top": "1cm",
+                "right": "1cm",
+                "bottom": "1cm",
+                "left": "1cm"
+            },
+        }).toFile(`${__dirname}/../reports/reporteHistorial.pdf`, (err) => {
+            if (err) {
+                return console.log(err);
+            }
+            reporte = fs.readFileSync(`${__dirname}/../reports/reporteHistorial.pdf`);
+            res.contentType('application/pdf');
+            return res.send(reporte);
+        });
 
     } catch (error) {
         return res.json({
@@ -115,7 +129,5 @@ const descargarHistorialPacientePDF = async (req, res) => {
 
 module.exports = {
     generarFacturaIngresos,
-    descargarFacturaIngresos,
     historialPacientePDF,
-    descargarHistorialPacientePDF
 }

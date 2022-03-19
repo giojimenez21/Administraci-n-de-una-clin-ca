@@ -1,24 +1,25 @@
 extends ./layout/index.pug
 block contenido
     if(info.length != 0)
-        p.text-md.mb-5.mx-8 Ingresos totales del periodo #{fechaInicial} a #{fechaFinal}:
-            span.font-bold.text-green-500 #{info[0].ingresosTotales} pesos.
-        .mx-auto.w-full
-            table.text-left.w-full.text-md.mx-8
-                thead.bg-blue-400.flex.text-white.w-full
-                    tr.flex.w-full.mb-4.border-b-2
-                        th.p-4(class='w-1/4') Paciente
-                        th.p-4(class='w-1/4') Servicio
-                        th.p-4(class='w-1/4') Doctor
-                        th.p-4(class='w-1/4') Precio
-                        th.p-4(class='w-1/4') Fecha
-                tbody.bg-grey-light.flex.flex-col.items-center.justify-between.w-full
-                    each i in info
-                        tr.flex.w-full.mb-4.border-b-2
-                            td.p-4(class='w-1/4') #{i.paciente}
-                            td.p-4(class='w-1/4') #{i.servicio}
-                            td.p-4(class='w-1/4') #{i.doctor}
-                            td.p-4(class='w-1/4') #{i.precio}
-                            td.p-4(class='w-1/4') #{i.fecha}
+        p.mb-3 Ingresos totales del periodo #{fechaInicial} a #{fechaFinal}:
+            span.fw-bold #{info[0].ingresosTotales} pesos.
+        .mx-auto.w-100
+            .table-responsive
+                table.table.table-bordered
+                    thead
+                        tr.p-4
+                            th Paciente
+                            th Servicio
+                            th Doctor
+                            th Precio
+                            th Fecha
+                    tbody
+                        each i in info
+                            tr.p-4
+                                td #{i.paciente}
+                                td #{i.servicio}
+                                td #{i.doctor}
+                                td #{i.precio}
+                                td #{i.fecha}
     else 
-        p.text-xl.mb-5.p-4 No hay ingresos durante ese periodo que selecciono.
+        p No hay ingresos durante el periodo seleccionado.
