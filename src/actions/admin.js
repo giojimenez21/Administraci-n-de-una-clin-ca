@@ -304,24 +304,27 @@ export const generatePDFIngresos = (fechaInicial, fechaFinal) => {
         try {
             dispatch(startLoadingPDF());
             const resp = await fetchConToken(
-                `pdf/descargarFacturaIngresos/${fechaInicial}/${fechaFinal}`,
+                `pdf/facturaIngresos/${fechaInicial}/${fechaFinal}`,
                 {},
                 "GET"
             );
             const pdf = await resp.blob();
+            console.log(pdf.type);
             dispatch(finishLoadingPDF());
-            download(new Blob([pdf]), `ingresos-${fechaInicial}-${fechaFinal}.pdf`, 'text/pdf');
+            download(new Blob([pdf]),`ingresos-${fechaInicial}-${fechaFinal}.pdf`, pdf.type);
         } catch (error) {
             console.log(error);
         }
     }
 }
+
+
 export const generatePDFHistorial = (id) => {
     return async (dispatch) => {
         try {
             dispatch(startLoadingPDF());
             const resp = await fetchConToken(
-                `pdf/descargarHistorialPacientePDF/${id}`,
+                `pdf/historialPacientePDF/${id}`,
                 {},
                 "GET"
             );
