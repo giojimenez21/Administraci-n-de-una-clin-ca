@@ -76,6 +76,7 @@ export const startGetAgendaCompleta = () => {
             const body = await resp.json();
 
             if (body.ok) {
+                console.log(body.agenda);
                 dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }
@@ -98,6 +99,7 @@ export const startGetAgendaById = (idDoctor) => {
             const body = await resp.json();
 
             if (body.ok) {
+                console.log(prepararEventos(body.agenda));
                 dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }

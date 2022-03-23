@@ -2,7 +2,8 @@ import { types } from "../types/types";
 
 const initial = {
     loading: true,
-    loadingPDF: false
+    loadingPDF: false,
+    stateModal: false
 };
 
 export const uiReducer = (state = initial, action) => {
@@ -30,6 +31,18 @@ export const uiReducer = (state = initial, action) => {
                 ...state,
                 loadingPDF: false,
             };
+
+        case types.openModal:
+            return{
+                ...state,
+                stateModal: true
+            }
+
+        case types.closeModal:
+            return{
+                ...state,
+                stateModal: false
+            }
         
         default:
             return state;

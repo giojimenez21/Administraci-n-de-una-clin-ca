@@ -29,6 +29,8 @@ export const types = {
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',
     startLoadingPDF: '[ui] Start loading pdf',
-    finishLoadingPDF: '[ui] Finish Loading pdf'
+    finishLoadingPDF: '[ui] Finish Loading pdf',
+    openModal: '[ui] Open Modal',
+    closeModal: '[ui] Close Modal'
 
 }

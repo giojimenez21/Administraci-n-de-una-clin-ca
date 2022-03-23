@@ -3,6 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
 import { messages } from '../../helpers/calendar-config';
+import { NewEvent } from './NewEvent';
 
 moment.locale('es', {
 	months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
@@ -29,11 +30,6 @@ export const CalendarScreen = ({eventos}) => {
 	// 	},
 	// }]
 
-	const openModal = () => {
-		console.log('abremodal');
-	}
-
-
 	return (
 		<div className='calendar-screen'>
 			<Calendar
@@ -44,12 +40,7 @@ export const CalendarScreen = ({eventos}) => {
 				messages={messages}
 			/>
 
-			<button
-				className='fixed bottom-5 right-5 rounded-full bg-red-500 text-center px-6 py-4 text-white text-2xl z-10'
-				onClick={openModal}
-			>
-				+
-			</button>
+			<NewEvent />
 		</div>
 	)
 }

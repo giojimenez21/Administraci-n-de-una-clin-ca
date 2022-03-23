@@ -15,3 +15,11 @@ export const startLoadingPDF = () => ({
 export const finishLoadingPDF = () => ({
     type: types.finishLoadingPDF,
 });
+
+export const startOpenModal = () =>({
+    type: types.openModal,
+});
+
+export const startCloseModal = () =>({
+    type: types.closeModal,
+});
