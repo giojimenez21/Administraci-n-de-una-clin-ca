@@ -67,11 +67,11 @@ const generarFacturaIngresos = async (req, res) => {
                 "bottom": "1cm",
                 "left": "1cm"
             },
-        }).toFile(`${__dirname}/../reports/reporteIngresos.pdf`, (err) => {
+        }).toFile(`${__dirname}/../reports/reporte-${fechaInicial}-${fechaFinal}.pdf`, (err) => {
             if (err) {
                 return console.log(err);
             }
-            reporte = fs.readFileSync(`${__dirname}/../reports/reporteIngresos.pdf`);
+            reporte = fs.readFileSync(`${__dirname}/../reports/reporte-${fechaInicial}-${fechaFinal}.pdf`);
             res.contentType('application/pdf');
             return res.send(reporte);
         });
@@ -110,11 +110,11 @@ const historialPacientePDF = async (req, res) => {
                 "bottom": "1cm",
                 "left": "1cm"
             },
-        }).toFile(`${__dirname}/../reports/reporteHistorial.pdf`, (err) => {
+        }).toFile(`${__dirname}/../reports/${info[0].nombre}.pdf`, (err) => {
             if (err) {
                 return console.log(err);
             }
-            reporte = fs.readFileSync(`${__dirname}/../reports/reporteHistorial.pdf`);
+            reporte = fs.readFileSync(`${__dirname}/../reports/${info[0].nombre}.pdf`);
             res.contentType('application/pdf');
             return res.send(reporte);
         });

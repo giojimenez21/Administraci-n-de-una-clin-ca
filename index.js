@@ -1,15 +1,15 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
-
+const cron = require("node-cron");
+const fs = require('fs');
 const { db } = require("./config/db");
 const { router } = require("./routes/user");
 const { routerPaciente } = require("./routes/paciente");
 const { routerAdmin } = require("./routes/admin");
 const { routerPDF } = require("./routes/pdf");
 
+require("dotenv").config();
 const app = express();
-
 
 db.authenticate()
     .then(() => console.log("Base conectada"))
@@ -25,8 +25,6 @@ app.use(express.json());
 
 app.set('view engine', 'pug');
 
-app.use(express.static('public'));
-
 app.use("/user", router);
 
 app.use("/paciente", routerPaciente);
@@ -34,3 +32,16 @@ app.use("/paciente", routerPaciente);
 app.use("/admin", routerAdmin);
 
 app.use("/pdf", routerPDF);
+
+cron.schedule("00 12 * * *", () => {
+    let carpetaReportes = fs.readdirSync(`${__dirname}/reports`);
+    if (carpetaReportes.length > 0) {
+        carpetaReportes.forEach(reporte => {
+            fs.unlink(`${__dirname}/reports/${reporte}`, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        })
+    };
+});
