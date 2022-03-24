@@ -85,13 +85,13 @@ const obtenerHistorialPaciente = async (req, res) => {
 };
 
 const nuevoServicioPaciente = async (req, res) => {
-    const { paciente, servicio, empleado, fecha } = req.body;
+    const { paciente, servicio, medico, fecha } = req.body;
 
     try {
         const servicioCreado = await PacienteServicio.create({
             id_paciente: paciente,
             id_servicio: servicio,
-            id_empleado: empleado,
+            id_empleado: medico,
             fecha
         });
 
@@ -102,7 +102,6 @@ const nuevoServicioPaciente = async (req, res) => {
         `,
             { type: db.QueryTypes.SELECT }
         );
-        console.log(info);
 
         return res.json({
             ok: true,
@@ -168,9 +167,15 @@ const obtenerAgendaDoctor = async (req, res) => {
     const { idDoctor } = req.params;
 
     try {
-        const agenda = await Agenda.findAll({
-            where: { id_empleado: idDoctor },
-        });
+        const agenda = await db.query(
+            `SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado 
+            FROM agenda_doctor as a 
+            JOIN servicios as s on(a.id_servicio = s.id)
+            WHERE id_empleado = '${idDoctor}';`,
+            {
+                type: db.QueryTypes.SELECT
+            }
+        )
 
         return res.json({
             ok: true,
@@ -186,7 +191,12 @@ const obtenerAgendaDoctor = async (req, res) => {
 
 const obtenerAgendaCompleta = async (req, res) => {
     try {
-        const agenda = await Agenda.findAll();
+        const agenda = await db.query(
+            'SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado FROM agenda_doctor as a JOIN servicios as s on(a.id_servicio = s.id);', 
+            {
+                type: db.QueryTypes.SELECT
+            }
+        );
 
         return res.json({
             ok: true,
@@ -202,13 +212,14 @@ const obtenerAgendaCompleta = async (req, res) => {
 }
 
 const nuevaCitaAgenda = async (req, res) => {
-    const { fecha, motivo, id_empleado } = req.body;
+    const { fechaInicial, fechaFinal, medico, servicio } = req.body;
 
     try {
         await Agenda.create({
-            fecha,
-            motivo,
-            id_empleado,
+            fechaInicial,
+            fechaFinal,
+            id_servicio: servicio,
+            id_empleado: medico,
         });
 
         return res.json({

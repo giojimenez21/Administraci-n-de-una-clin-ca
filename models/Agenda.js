@@ -14,8 +14,8 @@ const Agenda = db.define(
         fechaFinal: {
             type: Sequelize.DataTypes.TIME,
         },
-        motivo: {
-            type: Sequelize.DataTypes.STRING,
+        id_servicio: {
+            type: Sequelize.DataTypes.INTEGER
         },
         id_empleado: {
             type: Sequelize.DataTypes.INTEGER,
