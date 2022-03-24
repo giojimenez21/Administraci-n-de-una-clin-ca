@@ -3,7 +3,6 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
 import { messages } from '../../helpers/calendar-config';
-import { NewEvent } from './NewEvent';
 
 moment.locale('es', {
 	months: 'Enero_Febrero_Marzo_Abril_Mayo_Junio_Julio_Agosto_Septiembre_Octubre_Noviembre_Diciembre'.split('_'),
@@ -40,7 +39,6 @@ export const CalendarScreen = ({eventos}) => {
 				messages={messages}
 			/>
 
-			<NewEvent />
 		</div>
 	)
 }

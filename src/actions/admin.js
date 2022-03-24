@@ -243,7 +243,7 @@ export const startAddService = (servicio) => {
 const addService = (servicio) => ({
     type: types.addService,
     payload: servicio
-})
+});
 
 export const startLockUser = (id) => {
     return async (dispatch) => {

@@ -1,7 +1,8 @@
+import Swal from "sweetalert2";
 import { fetchConToken } from "../helpers/fetch";
 import { prepararEventos } from "../helpers/prepararEventos";
 import { types } from "../types/types";
-import { finishLoading, startLoading } from "./ui"
+import { finishLoading, startCloseModal, startLoading } from "./ui"
 
 export const startCrearPaciente = (paciente) => {
     return async (dispatch) => {
@@ -69,7 +70,7 @@ const getInfoPaciente = (paciente) => ({
 })
 
 export const startGetAgendaCompleta = () => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         try {
             dispatch(startLoading());
             const resp = await fetchConToken('paciente/getAgendaCompleta', {}, "GET");
@@ -86,13 +87,13 @@ export const startGetAgendaCompleta = () => {
     }
 }
 
-const getAgenda = (eventos) =>({
+const getAgenda = (eventos) => ({
     type: types.getAgenda,
     payload: eventos
 });
 
 export const startGetAgendaById = (idDoctor) => {
-    return async(dispatch) => {
+    return async (dispatch) => {
         try {
             dispatch(startLoading());
             const resp = await fetchConToken(`paciente/getAgendaDoctor/${idDoctor}`, {}, "GET");
@@ -108,3 +109,30 @@ export const startGetAgendaById = (idDoctor) => {
         }
     }
 }
+
+export const startAddServicePaciente = (agendaServicio, pacienteServicio) => {
+    return async (dispatch) => {
+        const promiseDB = [];
+        promiseDB.push(fetchConToken('paciente/nuevaCita', agendaServicio, "POST"));
+        promiseDB.push(fetchConToken('paciente/nuevoServicio', pacienteServicio, "POST"));
+        try {
+            const resultado = await Promise.all(promiseDB);
+            if(resultado[0].ok && resultado[1].ok){
+                dispatch(addServicePaciente(agendaServicio));
+                Swal.fire('Exito','Nueva cita creada','success')
+                    .then(result =>{
+                        dispatch(startCloseModal());
+                    })
+            }
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const addServicePaciente = (agendaServicio) =>({
+    type: types.addServicePaciente,
+    payload: agendaServicio
+})

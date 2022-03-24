@@ -31,6 +31,12 @@ export const recepcionistReducer = (state = initial, action) => {
                 ...state,
                 eventos: action.payload
             }
+
+        case types.addServicePaciente:
+            return{
+                ...state,
+                eventos: action.payload
+            }
         default:
             return state;
     }

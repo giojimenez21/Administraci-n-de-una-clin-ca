@@ -8,6 +8,7 @@ export const DateTime = ({ fecha, setFecha, variant, mensaje }) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker
+                inputFormat='DD/MM/YYYY hh:mm a'
                 label={mensaje}
                 value={fecha}
                 onChange={(newValue) => {

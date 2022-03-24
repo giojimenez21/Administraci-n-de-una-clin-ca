@@ -25,6 +25,7 @@ export const types = {
     createPaciente: '[recep] crearPaciente',
     getInfoPaciente: '[recep] getInfoPaciente',
     getAgenda: '[recep] getAgendaCompleta',
+    addServicePaciente: '[recep] Servicio paciente agregado',
 
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',
