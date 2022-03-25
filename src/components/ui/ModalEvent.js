@@ -25,7 +25,7 @@ export const ModalEvent = () => {
     const { stateModal } = useSelector(state => state.ui);
     const edad = moment().diff(moment(activePaciente.f_nacimiento), 'years');
     const fecha = moment();
-    const [fechaInicial, setFechaInicial] = useState(moment());
+    const [fechaInicio, setFechaInicio] = useState(moment());
     const [fechaFinal, setFechaFinal] = useState(moment());
     const [formValue, handleChange] = useForm({ medico: "", servicio: "" });
 
@@ -37,7 +37,7 @@ export const ModalEvent = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (fechaInicial.isSameOrAfter(fechaFinal)) {
+        if (fechaInicio.isSameOrAfter(fechaFinal)) {
             Swal.fire('Error', 'La fecha inicial no puede ser mayor a la final', 'error');
             return;
         }
@@ -46,7 +46,7 @@ export const ModalEvent = () => {
             Swal.fire('Error', 'Debe completar todos los campos', 'error');
             return;
         } else {
-            dispatch(startAddServicePaciente({ fechaInicial, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
+            dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
         }
 
 
@@ -67,7 +67,7 @@ export const ModalEvent = () => {
                 <p>Sexo: {activePaciente?.sexo === "M" ? "Masculino" : "Femenino"}</p>
                 <p>Edad: {edad} años</p>
                 <div className='my-4'>
-                    <DateTime fecha={fechaInicial} setFecha={setFechaInicial} mensaje="Fecha Inicial" />
+                    <DateTime fecha={fechaInicio} setFecha={setFechaInicio} mensaje="Fecha Inicial" />
                 </div>
                 <div className='my-4'>
                     <DateTime fecha={fechaFinal} setFecha={setFechaFinal} mensaje="Fecha Final" />

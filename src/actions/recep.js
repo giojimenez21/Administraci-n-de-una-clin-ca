@@ -12,7 +12,6 @@ export const startCrearPaciente = (paciente) => {
 
             if (body.ok) {
                 dispatch(crearPaciente(body.paciente));
-                console.log(body.paciente);
             }
         } catch (error) {
             console.log(error);
@@ -77,7 +76,6 @@ export const startGetAgendaCompleta = () => {
             const body = await resp.json();
 
             if (body.ok) {
-                console.log(body.agenda);
                 dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }
@@ -100,7 +98,6 @@ export const startGetAgendaById = (idDoctor) => {
             const body = await resp.json();
 
             if (body.ok) {
-                console.log(prepararEventos(body.agenda));
                 dispatch(getAgenda(prepararEventos(body.agenda)));
                 dispatch(finishLoading());
             }
@@ -117,22 +114,15 @@ export const startAddServicePaciente = (agendaServicio, pacienteServicio) => {
         promiseDB.push(fetchConToken('paciente/nuevoServicio', pacienteServicio, "POST"));
         try {
             const resultado = await Promise.all(promiseDB);
-            if(resultado[0].ok && resultado[1].ok){
-                dispatch(addServicePaciente(agendaServicio));
-                Swal.fire('Exito','Nueva cita creada','success')
-                    .then(result =>{
+            if (resultado[0].ok && resultado[1].ok) {
+                Swal.fire('Exito', 'Nueva cita creada', 'success')
+                    .then(result => {
                         dispatch(startCloseModal());
+                        dispatch(startGetAgendaCompleta());
                     })
             }
-
-
         } catch (error) {
             console.log(error);
         }
     }
 }
-
-const addServicePaciente = (agendaServicio) =>({
-    type: types.addServicePaciente,
-    payload: agendaServicio
-})
