@@ -97,7 +97,7 @@ const nuevoServicioPaciente = async (req, res) => {
 
         const [info] = await db.query(
             `
-            select ps.id,concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombre, s.nombre as servicio,s.precio as precio, concat('Dr(a)',e.nombre,e.ap_paterno) as doctor from paciente_servicios as ps join pacientes as p on(p.id = ps.id_paciente) join servicios as s on(s.id = ps.id_servicio) join empleados as e on(e.id = ps.id_empleado)
+            select ps.id as id,concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombre, s.nombre as servicio,s.precio as precio, concat('Dr(a)',e.nombre,e.ap_paterno) as doctor from paciente_servicios as ps join pacientes as p on(p.id = ps.id_paciente) join servicios as s on(s.id = ps.id_servicio) join empleados as e on(e.id = ps.id_empleado)
             where ps.id = ${servicioCreado.dataValues.id};
         `,
             { type: db.QueryTypes.SELECT }
@@ -192,7 +192,12 @@ const obtenerAgendaDoctor = async (req, res) => {
 const obtenerAgendaCompleta = async (req, res) => {
     try {
         const agenda = await db.query(
-            'SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado FROM agenda_doctor as a JOIN servicios as s on(a.id_servicio = s.id);', 
+            `
+                SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado, e.nombre 
+                FROM agenda_doctor as a 
+                JOIN servicios as s on(a.id_servicio = s.id)
+                JOIN empleados as e on(e.id = a.id_empleado);
+            `, 
             {
                 type: db.QueryTypes.SELECT
             }
@@ -212,11 +217,11 @@ const obtenerAgendaCompleta = async (req, res) => {
 }
 
 const nuevaCitaAgenda = async (req, res) => {
-    const { fechaInicial, fechaFinal, medico, servicio } = req.body;
+    const { fechaInicio, fechaFinal, medico, servicio } = req.body;
 
     try {
         await Agenda.create({
-            fechaInicial,
+            fechaInicio,
             fechaFinal,
             id_servicio: servicio,
             id_empleado: medico,
