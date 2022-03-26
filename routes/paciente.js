@@ -26,7 +26,7 @@ routerPaciente.get("/getAgendaCompleta",obtenerAgendaCompleta);
 
 routerPaciente.post("/nuevaCita",nuevaCitaAgenda);
 
-routerPaciente.delete("/borrarCita/:fechaCita", eliminarCitaAgenda);
+routerPaciente.delete("/borrarCita/:id", eliminarCitaAgenda);
 
 routerPaciente.put("/editarCita/:id", editarCitaAgenda);
 

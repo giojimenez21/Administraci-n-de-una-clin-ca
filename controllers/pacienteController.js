@@ -240,10 +240,10 @@ const nuevaCitaAgenda = async (req, res) => {
 };
 
 const eliminarCitaAgenda = async (req, res) => {
-    const { fechaCita } = req.params;
+    const { id } = req.params;
     try {
         await Agenda.destroy({
-            where: { fecha: fechaCita },
+            where: { id },
         });
 
         return res.json({
@@ -269,14 +269,14 @@ const editarCitaAgenda = async (req, res) => {
             fechaFinal,
             id_servicio: servicio,
             id_empleado: medico,
-        }, 
-        { 
-            where: { id } 
-        });
+        },
+            {
+                where: { id }
+            });
 
         return res.json({
             ok: true,
-            msg: "Cita actualizada.",
+            msg: "Cita actualizada",
         });
     } catch (error) {
         return res.json({
