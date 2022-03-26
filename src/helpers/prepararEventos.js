@@ -6,7 +6,9 @@ export const prepararEventos = (eventos) =>{
             id: evento.id,
             title: (evento.nombre ? evento.motivo + " - Doctor(a) " + evento.nombre : evento.motivo),
             start: moment(evento.fechaInicio).toDate(),
-            end: moment(evento.fechaFinal).toDate()
+            end: moment(evento.fechaFinal).toDate(),
+            id_servicio: evento.id_servicio,
+            id_empleado: evento.id_empleado
         }
     })
 }

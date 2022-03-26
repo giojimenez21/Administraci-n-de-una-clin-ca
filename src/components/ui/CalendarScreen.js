@@ -15,19 +15,7 @@ moment.locale('es', {
 
 const localizer = momentLocalizer(moment);
 
-export const CalendarScreen = ({eventos}) => {
-	// const events = [{
-	// 	id: new Date().getTime(),
-	// 	title: "Operacion",
-	// 	start: moment().toDate(),
-	// 	end: moment().add(5, "hours").toDate(),
-	// 	bgcolor: "#fafafa",
-	// 	notes: "Comprar",
-	// 	user: {
-	// 		_id: "123",
-	// 		name: "Gio",
-	// 	},
-	// }]
+export const CalendarScreen = ({eventos, onSelect, onSelectSlot}) => {
 
 	return (
 		<div className='calendar-screen'>
@@ -37,6 +25,9 @@ export const CalendarScreen = ({eventos}) => {
 				startAccessor="start"
 				endAccessor="end"
 				messages={messages}
+				onSelectEvent={onSelect}
+				onSelectSlot={onSelectSlot}
+				selectable={true}
 			/>
 
 		</div>

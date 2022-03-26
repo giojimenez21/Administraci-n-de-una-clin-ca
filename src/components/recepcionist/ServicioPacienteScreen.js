@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom';
 import { startGetServicios } from '../../actions/admin';
-import { startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
+import { clearActiveEvent, setActiveEvent, startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
 import { useForm } from '../../hooks/useForm';
 import { CalendarScreen } from '../ui/CalendarScreen'
 import { ModalEvent } from '../ui/ModalEvent';
@@ -26,14 +26,20 @@ export const ServicioPacienteScreen = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if(medico === "" || medico === "Todos"){
+        if (medico === "" || medico === "Todos") {
             dispatch(startGetAgendaCompleta());
-        }else{
+        } else {
             dispatch(startGetAgendaById(medico));
         }
-    }, [medico,dispatch])
+    }, [medico, dispatch])
 
+    const onSelect = (e) => {
+        dispatch(setActiveEvent(e));
+    };
 
+    const onSelectSlot = () => {
+        dispatch(clearActiveEvent());
+    }
 
     if (loading) {
         return <div className="loader">Loading...</div>;
@@ -62,8 +68,8 @@ export const ServicioPacienteScreen = () => {
                     </Select>
                 </FormControl>
             </div>
-            
-            <CalendarScreen  eventos={eventos}/>
+
+            <CalendarScreen eventos={eventos} onSelect={onSelect} onSelectSlot={onSelectSlot} />
 
             <NewEvent />
 

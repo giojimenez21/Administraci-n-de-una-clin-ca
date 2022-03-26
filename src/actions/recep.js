@@ -126,3 +126,12 @@ export const startAddServicePaciente = (agendaServicio, pacienteServicio) => {
         }
     }
 }
+
+export const setActiveEvent = (event) => ({
+    type: types.activeEvent,
+    payload: event
+});
+
+export const clearActiveEvent = () => ({
+    type: types.clearActiveEvent
+});

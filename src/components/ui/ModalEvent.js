@@ -1,6 +1,6 @@
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import Swal from "sweetalert2";
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,22 +18,40 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
+const initSetEvent = { medico: "", servicio: "" };
+
 export const ModalEvent = () => {
     const dispatch = useDispatch();
-    const { activePaciente, medicos } = useSelector(state => state.recep);
+    const { activePaciente, medicos, activeEvent } = useSelector(state => state.recep);
     const { servicios } = useSelector(state => state.admin);
     const { stateModal } = useSelector(state => state.ui);
     const edad = moment().diff(moment(activePaciente.f_nacimiento), 'years');
     const fecha = moment();
     const [fechaInicio, setFechaInicio] = useState(moment());
     const [fechaFinal, setFechaFinal] = useState(moment());
-    const [formValue, handleChange] = useForm({ medico: "", servicio: "" });
+    const [formValue, handleChange] = useForm(initSetEvent);
 
     const closeModal = () => {
         dispatch(startCloseModal());
     }
+
+    useEffect(() => {
+        if (Object.keys(activeEvent).length > 0) {
+            setFechaInicio(moment(activeEvent.start));
+            setFechaFinal(moment(activeEvent.end));
+            formValue.medico = activeEvent.id_empleado;
+            formValue.servicio = activeEvent.id_servicio;
+        } else {
+            setFechaInicio(moment());
+            setFechaFinal(moment());
+            formValue.medico = initSetEvent.medico;
+            formValue.servicio = initSetEvent.servicio;
+        }
+    }, [activeEvent, formValue]);
+
     const { medico, servicio } = formValue;
     const { id: paciente } = activePaciente;
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -62,7 +80,7 @@ export const ModalEvent = () => {
             overlayClassName="modal-fondo"
         >
             <form className='container p-4 mx-auto text-xl' onSubmit={handleSubmit}>
-                <h1 className='text-2xl font-bold text-center mb-2'>Nueva cita</h1>
+                <h1 className='text-2xl font-bold text-center mb-2'>{Object.keys(activeEvent).length === 0 ? "Nueva cita" : "Editar cita"}</h1>
                 <p>Nombre del paciente: {activePaciente?.nombre} {activePaciente?.ap_paterno} {activePaciente?.ap_materno}</p>
                 <p>Sexo: {activePaciente?.sexo === "M" ? "Masculino" : "Femenino"}</p>
                 <p>Edad: {edad} años</p>
@@ -119,7 +137,7 @@ export const ModalEvent = () => {
                 <button
                     className='mx-auto block bg-red-500 p-4 rounded-md text-white'
                 >
-                    Crear cita
+                    {Object.keys(activeEvent).length === 0 ? "Crear cita" : "Editar Cita"}
                 </button>
             </form>
         </Modal>
