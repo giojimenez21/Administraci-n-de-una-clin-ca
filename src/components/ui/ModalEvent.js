@@ -46,8 +46,8 @@ export const ModalEvent = () => {
             setFechaFinal(moment());
             formValue.medico = initSetEvent.medico;
             formValue.servicio = initSetEvent.servicio;
-            console.log(formValue.medico,formValue.servicio);
         }
+        // eslint-disable-next-line
     }, [activeEvent]);
 
     const { medico, servicio } = formValue;
@@ -67,8 +67,6 @@ export const ModalEvent = () => {
         } else {
             dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
         }
-
-
     }
 
     return (
