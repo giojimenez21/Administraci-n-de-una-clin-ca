@@ -168,7 +168,7 @@ const obtenerAgendaDoctor = async (req, res) => {
 
     try {
         const agenda = await db.query(
-            `SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado 
+            `SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado 
             FROM agenda_doctor as a 
             JOIN servicios as s on(a.id_servicio = s.id)
             WHERE id_empleado = '${idDoctor}';`,
@@ -193,7 +193,7 @@ const obtenerAgendaCompleta = async (req, res) => {
     try {
         const agenda = await db.query(
             `
-                SELECT a.id, a.fechaInicio, a.fechaFinal, s.nombre as motivo, a.id_empleado, e.nombre 
+                SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado, e.nombre 
                 FROM agenda_doctor as a 
                 JOIN servicios as s on(a.id_servicio = s.id)
                 JOIN empleados as e on(e.id = a.id_empleado);
