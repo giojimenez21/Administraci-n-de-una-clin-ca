@@ -14,7 +14,7 @@ export const NewEvent = () => {
 
     return (
         <button
-            className='fixed bottom-5 right-5 rounded-full bg-red-500 text-center px-5 py-4 text-white text-2xl z-10'
+            className='fixed bottom-5 right-5 rounded-full bg-blue-500 text-center px-5 py-4 text-white text-2xl z-10'
             onClick={openModal}
         >
             <FontAwesomeIcon icon={Object.keys(activeEvent).length === 0 ? faPlus : faEdit} />

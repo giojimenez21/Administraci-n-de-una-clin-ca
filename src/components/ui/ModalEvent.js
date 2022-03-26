@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { startCloseModal } from '../../actions/ui';
 import { useForm } from '../../hooks/useForm';
 import { DateTime } from './DateTime';
-import { startAddServicePaciente } from '../../actions/recep';
+import { startAddServicePaciente, startUpdateEvent } from '../../actions/recep';
 
 const customStyles = {
     content: {
@@ -65,7 +65,15 @@ export const ModalEvent = () => {
             Swal.fire('Error', 'Debe completar todos los campos', 'error');
             return;
         } else {
-            dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
+            if (Object.keys(activeEvent).length === 0) {
+                console.log('nuevo');
+                dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
+            } else {
+                console.log('actualizado');
+                const { id, title } = activeEvent;
+                dispatch(startUpdateEvent({ id, title, fechaInicio, fechaFinal, medico, servicio }));
+            }
+
         }
     }
 

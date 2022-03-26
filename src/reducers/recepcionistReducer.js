@@ -1,48 +1,54 @@
-import {types} from '../types/types';
+import { types } from '../types/types';
 
 const initial = {
     medicos: [],
-    activePaciente:{},
-    eventos:[],
-    activeEvent:{}
+    activePaciente: {},
+    eventos: [],
+    activeEvent: {}
 }
 
 export const recepcionistReducer = (state = initial, action) => {
     switch (action.type) {
         case types.startGetMedicos:
-            return{
+            return {
                 ...state,
                 medicos: action.payload
             }
 
         case types.createPaciente:
-            return{
+            return {
                 ...state,
                 activePaciente: action.payload
             }
 
         case types.getInfoPaciente:
-            return{
+            return {
                 ...state,
                 activePaciente: action.payload
             }
 
         case types.getAgenda:
-            return{
+            return {
                 ...state,
                 eventos: action.payload
             }
 
         case types.activeEvent:
-            return{
+            return {
                 ...state,
                 activeEvent: action.payload
             }
 
         case types.clearActiveEvent:
-            return{
+            return {
                 ...state,
                 activeEvent: {}
+            }
+
+        case types.deleteEvent:
+            return {
+                ...state,
+                eventos: state.eventos.filter(e => e.id !== state.activeEvent.id)
             }
         default:
             return state;

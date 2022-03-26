@@ -1,11 +1,12 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux'
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { startGetServicios } from '../../actions/admin';
 import { clearActiveEvent, setActiveEvent, startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
 import { useForm } from '../../hooks/useForm';
 import { CalendarScreen } from '../ui/CalendarScreen'
+import { DeleteEvent } from '../ui/DeleteEvent';
 import { ModalEvent } from '../ui/ModalEvent';
 import { NewEvent } from '../ui/NewEvent';
 
@@ -13,7 +14,7 @@ export const ServicioPacienteScreen = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
     const { loading } = useSelector(state => state.ui);
-    const { medicos, eventos } = useSelector(state => state.recep);
+    const { medicos, eventos, activeEvent } = useSelector(state => state.recep);
     const [formValues, handleChange] = useForm({
         medico: ""
     });
@@ -72,6 +73,10 @@ export const ServicioPacienteScreen = () => {
             <CalendarScreen eventos={eventos} onSelect={onSelect} onSelectSlot={onSelectSlot} />
 
             <NewEvent />
+
+            {
+                (Object.keys(activeEvent).length > 0 && <DeleteEvent />)
+            }
 
             <ModalEvent />
         </div>

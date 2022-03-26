@@ -28,6 +28,8 @@ export const types = {
     addServicePaciente: '[recep] Servicio paciente agregado',
     activeEvent: '[recep] ActiveEvent',
     clearActiveEvent: '[recep] ClearActiveEvent',
+    updateEvent: '[recep] updateEvent',
+    deleteEvent: '[recep] deleteEvent',
 
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',

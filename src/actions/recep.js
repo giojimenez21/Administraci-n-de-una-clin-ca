@@ -135,3 +135,44 @@ export const setActiveEvent = (event) => ({
 export const clearActiveEvent = () => ({
     type: types.clearActiveEvent
 });
+
+export const startUpdateEvent = (event) => {
+    return async (dispatch) => {
+        try {
+            const resp = await fetchConToken(`paciente/editarCita/${event.id}`, event, "PUT");
+            const body = await resp.json();
+
+            if (body.ok) {
+                Swal.fire('Exito', `${body.msg}`, 'success')
+                    .then(result => {
+                        dispatch(startCloseModal());
+                        dispatch(startGetAgendaCompleta());
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+export const startDeleteEvent = () => {
+    return async (dispatch, getState) => {
+        const { activeEvent } = getState().recep;
+        try {
+            const resp = await fetchConToken(`paciente/borrarCita/${activeEvent.id}`, {}, "DELETE");
+            const body = await resp.json();
+
+            if (body.ok) {
+                dispatch(deleteEvent());
+                dispatch(clearActiveEvent());
+                Swal.fire('Exito', `${body.msg}`, 'success')
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const deleteEvent = () => ({
+    type: types.deleteEvent
+});
