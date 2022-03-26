@@ -18,7 +18,6 @@ const customStyles = {
 
 Modal.setAppElement("#root");
 
-const initSetEvent = { medico: "", servicio: "" };
 
 export const ModalEvent = () => {
     const dispatch = useDispatch();
@@ -29,6 +28,7 @@ export const ModalEvent = () => {
     const fecha = moment();
     const [fechaInicio, setFechaInicio] = useState(moment());
     const [fechaFinal, setFechaFinal] = useState(moment());
+    const initSetEvent = { medico: "", servicio: "" };
     const [formValue, handleChange] = useForm(initSetEvent);
 
     const closeModal = () => {
@@ -46,8 +46,9 @@ export const ModalEvent = () => {
             setFechaFinal(moment());
             formValue.medico = initSetEvent.medico;
             formValue.servicio = initSetEvent.servicio;
+            console.log(formValue.medico,formValue.servicio);
         }
-    }, [activeEvent, formValue]);
+    }, [activeEvent]);
 
     const { medico, servicio } = formValue;
     const { id: paciente } = activePaciente;
