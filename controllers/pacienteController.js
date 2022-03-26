@@ -197,7 +197,7 @@ const obtenerAgendaCompleta = async (req, res) => {
                 FROM agenda_doctor as a 
                 JOIN servicios as s on(a.id_servicio = s.id)
                 JOIN empleados as e on(e.id = a.id_empleado);
-            `, 
+            `,
             {
                 type: db.QueryTypes.SELECT
             }
@@ -257,9 +257,34 @@ const eliminarCitaAgenda = async (req, res) => {
             msg: error
         })
     }
-
-
 };
+
+const editarCitaAgenda = async (req, res) => {
+    const { id } = req.params;
+    const { fechaInicio, fechaFinal, medico, servicio } = req.body;
+
+    try {
+        await Agenda.update({
+            fechaInicio,
+            fechaFinal,
+            id_servicio: servicio,
+            id_empleado: medico,
+        }, 
+        { 
+            where: { id } 
+        });
+
+        return res.json({
+            ok: true,
+            msg: "Cita actualizada.",
+        });
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+}
 
 module.exports = {
     crearPaciente,
@@ -272,5 +297,6 @@ module.exports = {
     obtenerAgendaCompleta,
     nuevaCitaAgenda,
     eliminarCitaAgenda,
+    editarCitaAgenda,
     obtenerPaciente
 };
