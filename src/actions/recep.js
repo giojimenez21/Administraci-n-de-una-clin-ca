@@ -66,7 +66,11 @@ export const startGetInfoPaciente = (id) => {
 const getInfoPaciente = (paciente) => ({
     type: types.getInfoPaciente,
     payload: paciente
-})
+});
+
+export const clearActivePaciente = () =>({
+    type: types.clearActivePaciente
+});
 
 export const startGetAgendaCompleta = () => {
     return async (dispatch) => {

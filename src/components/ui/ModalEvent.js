@@ -24,12 +24,17 @@ export const ModalEvent = () => {
     const { activePaciente, medicos, activeEvent } = useSelector(state => state.recep);
     const { servicios } = useSelector(state => state.admin);
     const { stateModal } = useSelector(state => state.ui);
-    const edad = moment().diff(moment(activePaciente.f_nacimiento), 'years');
     const fecha = moment();
     const [fechaInicio, setFechaInicio] = useState(moment());
     const [fechaFinal, setFechaFinal] = useState(moment());
     const initSetEvent = { medico: "", servicio: "" };
+    const initDatosPaciente = {
+        nombre: activePaciente.nombre + " " + activePaciente.ap_paterno + " " + activePaciente.ap_materno,
+        sexo: (activePaciente.sexo) === "M" ? "Masculino" : "Femenino",
+        edad: moment().diff(moment(activePaciente.f_nacimiento), 'years')
+    }
     const [formValue, handleChange] = useForm(initSetEvent);
+    const [datosPaciente, setDatosPaciente] = useState(initDatosPaciente);
 
     const closeModal = () => {
         dispatch(startCloseModal());
@@ -41,11 +46,18 @@ export const ModalEvent = () => {
             setFechaFinal(moment(activeEvent.end));
             formValue.medico = activeEvent.id_empleado;
             formValue.servicio = activeEvent.id_servicio;
+            setDatosPaciente(
+                {
+                    nombre: activeEvent.nombrePaciente,
+                    sexo: (activeEvent.sexo) === "M" ? "Masculino" : "Femenino",
+                    edad: moment().diff(moment(activeEvent.f_nacimiento), 'years')
+                });
         } else {
             setFechaInicio(moment());
             setFechaFinal(moment());
             formValue.medico = initSetEvent.medico;
             formValue.servicio = initSetEvent.servicio;
+            setDatosPaciente(initDatosPaciente);
         }
         // eslint-disable-next-line
     }, [activeEvent]);
@@ -66,8 +78,7 @@ export const ModalEvent = () => {
             return;
         } else {
             if (Object.keys(activeEvent).length === 0) {
-                console.log('nuevo');
-                dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio }, { fecha, paciente, medico, servicio }));
+                dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio, paciente }, { fecha, paciente, medico, servicio }));
             } else {
                 console.log('actualizado');
                 const { id, title } = activeEvent;
@@ -88,9 +99,9 @@ export const ModalEvent = () => {
         >
             <form className='container p-4 mx-auto text-xl' onSubmit={handleSubmit}>
                 <h1 className='text-2xl font-bold text-center mb-2'>{Object.keys(activeEvent).length === 0 ? "Nueva cita" : "Editar cita"}</h1>
-                <p>Nombre del paciente: {activePaciente?.nombre} {activePaciente?.ap_paterno} {activePaciente?.ap_materno}</p>
-                <p>Sexo: {activePaciente?.sexo === "M" ? "Masculino" : "Femenino"}</p>
-                <p>Edad: {edad} años</p>
+                <p>Nombre del paciente: {datosPaciente.nombre}</p>
+                <p>Sexo: {datosPaciente.sexo}</p>
+                <p>Edad: {datosPaciente.edad} años</p>
                 <div className='my-4'>
                     <DateTime fecha={fechaInicio} setFecha={setFechaInicio} mensaje="Fecha Inicial" />
                 </div>

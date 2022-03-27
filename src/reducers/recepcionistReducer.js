@@ -27,6 +27,12 @@ export const recepcionistReducer = (state = initial, action) => {
                 activePaciente: action.payload
             }
 
+        case types.clearActivePaciente:
+            return {
+                ...state,
+                activePaciente: {}
+            }
+
         case types.getAgenda:
             return {
                 ...state,
@@ -34,12 +40,14 @@ export const recepcionistReducer = (state = initial, action) => {
             }
 
         case types.activeEvent:
+            console.log('me active');
             return {
                 ...state,
                 activeEvent: action.payload
             }
 
         case types.clearActiveEvent:
+            console.log('hola voy a borrar');
             return {
                 ...state,
                 activeEvent: {}

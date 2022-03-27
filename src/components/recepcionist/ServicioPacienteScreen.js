@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { startGetServicios } from '../../actions/admin';
-import { clearActiveEvent, setActiveEvent, startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
+import { clearActiveEvent, clearActivePaciente, setActiveEvent, startGetAgendaById, startGetAgendaCompleta, startGetInfoPaciente, startGetMedicos } from '../../actions/recep';
 import { useForm } from '../../hooks/useForm';
 import { CalendarScreen } from '../ui/CalendarScreen'
 import { DeleteEvent } from '../ui/DeleteEvent';
@@ -24,6 +24,10 @@ export const ServicioPacienteScreen = () => {
         dispatch(startGetInfoPaciente(id));
         dispatch(startGetMedicos());
         dispatch(startGetServicios());
+
+        return () =>{
+            dispatch(clearActivePaciente());
+        }
     }, [dispatch])
 
     useEffect(() => {
@@ -34,6 +38,7 @@ export const ServicioPacienteScreen = () => {
         }
     }, [medico, dispatch])
 
+    
     const onSelect = (e) => {
         dispatch(setActiveEvent(e));
     };

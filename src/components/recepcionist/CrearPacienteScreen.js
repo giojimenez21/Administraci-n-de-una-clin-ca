@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { startCrearPaciente } from '../../actions/recep'
+import { clearActivePaciente, startCrearPaciente } from '../../actions/recep'
 import { useForm } from '../../hooks/useForm'
 import { Date } from '../ui/Date'
 
@@ -25,7 +25,7 @@ export const CrearPacienteScreen = () => {
         if (name === "" || apellido1 === "" || apellido2 === "" || sexo === "" || fecha_nacimiento === "") {
             Swal.fire("Error", "Debe completar todos los campos", "error");
         } else {
-            dispatch(startCrearPaciente({ ...formValues, fecha_nacimiento }));
+            dispatch(startCrearPaciente({ ...formValues, fecha_nacimiento }))
             Swal.fire('Paciente creado', 'El paciente fue creado de manera correcta', 'success')
         }
     }
@@ -35,9 +35,9 @@ export const CrearPacienteScreen = () => {
             navigate(`/recepcionista/calendar/${activePaciente.id}`);
         }
         return () => {
-            activePaciente.id = undefined;
+            dispatch(clearActivePaciente());
         }
-    }, [activePaciente.id]);
+    }, [activePaciente, navigate, dispatch]);
 
     return (
         <div className='flex justify-center items-center my-5'>
