@@ -168,10 +168,14 @@ const obtenerAgendaDoctor = async (req, res) => {
 
     try {
         const agenda = await db.query(
-            `SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado 
+            `
+            SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado, a.id_paciente, concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombrePaciente, p.sexo, p.f_nacimiento
             FROM agenda_doctor as a 
-            JOIN servicios as s on(a.id_servicio = s.id)
-            WHERE id_empleado = '${idDoctor}';`,
+            JOIN servicios as s on(s.id = a.id_servicio)
+            JOIN empleados as e on(e.id = a.id_empleado)
+            JOIN pacientes as p on(p.id = a.id_paciente)
+            WHERE a.id_empleado = '${idDoctor}';
+            `,
             {
                 type: db.QueryTypes.SELECT
             }
@@ -193,10 +197,11 @@ const obtenerAgendaCompleta = async (req, res) => {
     try {
         const agenda = await db.query(
             `
-                SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado, e.nombre 
+                SELECT a.id, a.fechaInicio, a.fechaFinal, a.id_servicio,s.nombre as motivo, a.id_empleado, e.nombre as nombreDoctor, a.id_paciente, concat_ws(' ',p.nombre,p.ap_paterno,p.ap_materno) as nombrePaciente, p.sexo, p.f_nacimiento
                 FROM agenda_doctor as a 
-                JOIN servicios as s on(a.id_servicio = s.id)
-                JOIN empleados as e on(e.id = a.id_empleado);
+                JOIN servicios as s on(s.id = a.id_servicio)
+                JOIN empleados as e on(e.id = a.id_empleado)
+                JOIN pacientes as p on(p.id = a.id_paciente);
             `,
             {
                 type: db.QueryTypes.SELECT
@@ -217,7 +222,7 @@ const obtenerAgendaCompleta = async (req, res) => {
 }
 
 const nuevaCitaAgenda = async (req, res) => {
-    const { fechaInicio, fechaFinal, medico, servicio } = req.body;
+    const { fechaInicio, fechaFinal, medico, servicio, paciente } = req.body;
 
     try {
         await Agenda.create({
@@ -225,6 +230,7 @@ const nuevaCitaAgenda = async (req, res) => {
             fechaFinal,
             id_servicio: servicio,
             id_empleado: medico,
+            id_paciente: paciente
         });
 
         return res.json({

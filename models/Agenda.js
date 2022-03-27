@@ -20,6 +20,9 @@ const Agenda = db.define(
         id_empleado: {
             type: Sequelize.DataTypes.INTEGER,
         },
+        id_paciente: {
+            type: Sequelize.DataTypes.INTEGER,
+        },
     },
     { freezeTableName: true }
 );
