@@ -174,7 +174,8 @@ const obtenerAgendaDoctor = async (req, res) => {
             JOIN servicios as s on(s.id = a.id_servicio)
             JOIN empleados as e on(e.id = a.id_empleado)
             JOIN pacientes as p on(p.id = a.id_paciente)
-            WHERE a.id_empleado = '${idDoctor}';
+            WHERE a.id_empleado = '${idDoctor}'
+            ORDER BY 2 ASC;
             `,
             {
                 type: db.QueryTypes.SELECT
