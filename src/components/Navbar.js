@@ -87,6 +87,32 @@ export const Navbar = () => {
                         </button>
                     </ul>
                 )}
+                {rol === "Doctor" && (
+                    <ul className="block lg:flex lg:items-center" >
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/">
+                                Inicio
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/medico/pacientes/">
+                                Pacientes
+                            </Link>
+                        </li>
+                        <li className="mx-2 rounded-md hover:bg-blue-500 p-4 block lg:inline-block">
+                            <Link to="/medico/agenda">
+                                Agenda
+                            </Link>
+                        </li>
+                        <button
+                            className="mx-2 px-4 py-2 rounded border border-white hover:bg-white hover:text-blue-400"
+                            type="submit"
+                            onClick={handleLogout}
+                        >
+                            Salir
+                        </button>
+                    </ul>
+                )}
             </div>
         </nav>
     );
