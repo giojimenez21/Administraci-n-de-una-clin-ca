@@ -2,6 +2,9 @@ const Sequelize = require("sequelize");
 const { db } = require("../config/db");
 
 const Consultas = db.define("consultas", {
+    diagnostico:{
+        type: Sequelize.DataTypes.TEXT
+    },
     sintomas: {
         type: Sequelize.DataTypes.TEXT
     },

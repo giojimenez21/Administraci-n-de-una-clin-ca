@@ -116,10 +116,11 @@ const nuevoServicioPaciente = async (req, res) => {
 };
 
 const nuevaConsultaPaciente = async (req, res) => {
-    const { sintomas, receta, f_consulta, id_paciente, id_empleado } = req.body;
+    const { diagnostico, sintomas, receta, f_consulta, id_paciente, id_empleado } = req.body;
 
     try {
         await Consultas.create({
+            diagnostico,
             sintomas,
             receta,
             f_consulta,
@@ -174,7 +175,7 @@ const obtenerAgendaDoctor = async (req, res) => {
             JOIN servicios as s on(s.id = a.id_servicio)
             JOIN empleados as e on(e.id = a.id_empleado)
             JOIN pacientes as p on(p.id = a.id_paciente)
-            WHERE a.id_empleado = '${idDoctor}'
+            WHERE a.id_empleado = '${idDoctor}' AND a.finalizado != true
             ORDER BY 2 ASC;
             `,
             {
@@ -202,7 +203,8 @@ const obtenerAgendaCompleta = async (req, res) => {
                 FROM agenda_doctor as a 
                 JOIN servicios as s on(s.id = a.id_servicio)
                 JOIN empleados as e on(e.id = a.id_empleado)
-                JOIN pacientes as p on(p.id = a.id_paciente);
+                JOIN pacientes as p on(p.id = a.id_paciente)
+                WHERE a.finalizado != true;
             `,
             {
                 type: db.QueryTypes.SELECT
@@ -231,7 +233,8 @@ const nuevaCitaAgenda = async (req, res) => {
             fechaFinal,
             id_servicio: servicio,
             id_empleado: medico,
-            id_paciente: paciente
+            id_paciente: paciente,
+            finalizado: false
         });
 
         return res.json({
@@ -293,6 +296,28 @@ const editarCitaAgenda = async (req, res) => {
     }
 }
 
+const finalizarCita = async (req, res) => {
+    const { id } = req.params;
+    try {
+        await Agenda.update({
+            finalizado: true
+        },
+            {
+                where: { id }
+            });
+
+        return res.json({
+            ok: true,
+            msg: "Cita finalizada.",
+        });
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+}
+
 module.exports = {
     crearPaciente,
     obtenerPacientes,
@@ -305,5 +330,6 @@ module.exports = {
     nuevaCitaAgenda,
     eliminarCitaAgenda,
     editarCitaAgenda,
-    obtenerPaciente
+    obtenerPaciente,
+    finalizarCita
 };

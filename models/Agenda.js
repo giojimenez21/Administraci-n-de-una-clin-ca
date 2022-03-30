@@ -23,6 +23,9 @@ const Agenda = db.define(
         id_paciente: {
             type: Sequelize.DataTypes.INTEGER,
         },
+        finalizado:{
+            type: Sequelize.DataTypes.BOOLEAN
+        }
     },
     { freezeTableName: true }
 );
