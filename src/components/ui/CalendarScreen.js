@@ -15,19 +15,20 @@ moment.locale('es', {
 
 const localizer = momentLocalizer(moment);
 
-export const CalendarScreen = ({eventos, onSelect, onSelectSlot}) => {
+export const CalendarScreen = ({eventos, onSelect, onSelectSlot, onDoubleClickEvent}) => {
 
 	return (
 		<div className='calendar-screen'>
 			<Calendar
-				localizer={localizer}
+				selectable={true}
 				events={eventos}
+				localizer={localizer}
 				startAccessor="start"
 				endAccessor="end"
 				messages={messages}
 				onSelectEvent={onSelect}
 				onSelectSlot={onSelectSlot}
-				selectable={true}
+				onDoubleClickEvent={onDoubleClickEvent}
 			/>
 
 		</div>

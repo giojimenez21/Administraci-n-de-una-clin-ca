@@ -32,6 +32,8 @@ export const types = {
     updateEvent: '[recep] updateEvent',
     deleteEvent: '[recep] deleteEvent',
 
+    finalizarCita: '[medico] finalizarCita',
+
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',
     startLoadingPDF: '[ui] Start loading pdf',

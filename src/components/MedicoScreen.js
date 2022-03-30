@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
+import Swal from 'sweetalert2';
 import { Link } from 'react-router-dom';
 import Card from '@mui/material/Card';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import { useDispatch, useSelector } from 'react-redux';
 import { startGetAgendaById } from '../actions/recep';
+import { startFinalizarCita } from '../actions/medico';
 
 export const MedicoScreen = () => {
     const dispatch = useDispatch();
@@ -18,6 +20,19 @@ export const MedicoScreen = () => {
     useEffect(() => {
         dispatch(startGetAgendaById(id));
     }, [dispatch, id]);
+
+    const finalizarCita = (id) => {
+        Swal.fire({
+            title: '¿Está seguro de finalizar la cita?',
+            showDenyButton: true,
+            confirmButtonText: 'Finalizar.',
+            denyButtonText: `No, regresar.`,
+        }).then((result) => {
+            if (result.isConfirmed) {
+                dispatch(startFinalizarCita(id));
+            }
+        })
+    }
 
 
     if (loading) {
@@ -33,10 +48,10 @@ export const MedicoScreen = () => {
 
             <div className='w-full flex flex-wrap'>
                 {
-                    eventos?.filter(e => e.start >= moment() && e.start <= moment().add(1, 'd'))
+                    eventos?.filter(e => moment(e.start).dayOfYear() === moment().dayOfYear())
                         .map(evento => {
                             return (
-                                <div className='w-1/3 p-2'>
+                                <div className='w-1/3 p-2' key={evento.id}>
                                     <Card>
                                         <CardContent>
                                             <Typography variant="h5" component="div">
@@ -50,9 +65,10 @@ export const MedicoScreen = () => {
                                             </Typography>
                                         </CardContent>
                                         <CardActions>
-                                            <Link to={`/medico/historial/${evento.id_paciente}`}>
+                                            <Link className="mr-2" to={`/medico/historial/${evento.id_paciente}`}>
                                                 <Button variant="contained" size="medium">Historial</Button>
                                             </Link>
+                                            <Button onClick={() => finalizarCita(evento.id)} variant="contained" size="medium">Finalizar</Button>
                                         </CardActions>
                                     </Card>
                                 </div>

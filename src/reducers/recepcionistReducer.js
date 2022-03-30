@@ -58,6 +58,12 @@ export const recepcionistReducer = (state = initial, action) => {
                 ...state,
                 eventos: state.eventos.filter(e => e.id !== state.activeEvent.id)
             }
+
+        case types.finalizarCita:
+            return {
+                ...state,
+                eventos: state.eventos.filter(e => e.id !== action.payload)
+            }
         default:
             return state;
     }
