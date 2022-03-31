@@ -1,17 +1,17 @@
 import { types } from "../types/types"
 
 const initial = {
-    pacienteConsulta : {}
+    consultasPaciente: []
 }
 
 
 export const medicoReducer = (state = initial, action) => {
     switch (action.type) {
 
-        case types.pacienteConsulta:
+        case types.getConsultas:
             return{
                 ...state,
-                pacienteConsulta: action.payload
+                consultasPaciente: action.payload
             }
 
 

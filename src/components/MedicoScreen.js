@@ -51,7 +51,7 @@ export const MedicoScreen = () => {
                     eventos?.filter(e => moment(e.start).dayOfYear() === moment().dayOfYear())
                         .map(evento => {
                             return (
-                                <div className='w-1/3 p-2' key={evento.id}>
+                                <div className='w-full md:w-1/3 p-2' key={evento.id}>
                                     <Card>
                                         <CardContent>
                                             <Typography variant="h5" component="div">
@@ -66,7 +66,14 @@ export const MedicoScreen = () => {
                                         </CardContent>
                                         <CardActions>
                                             <Link className="mr-2" to={`/medico/historial/${evento.id_paciente}`}>
-                                                <Button variant="contained" size="medium">Historial</Button>
+                                                <Button variant="contained" size="medium">
+                                                    Historial
+                                                </Button>
+                                            </Link>
+                                            <Link className="mr-2" to={`/medico/pacienteConsultas/${evento.id_paciente}`}>
+                                                <Button variant="contained" size="medium">
+                                                    Consultas
+                                                </Button>
                                             </Link>
                                             <Button onClick={() => finalizarCita(evento.id)} variant="contained" size="medium">Finalizar</Button>
                                         </CardActions>

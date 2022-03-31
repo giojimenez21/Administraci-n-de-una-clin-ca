@@ -33,6 +33,7 @@ export const types = {
     deleteEvent: '[recep] deleteEvent',
 
     finalizarCita: '[medico] finalizarCita',
+    getConsultas: '[medico] getConsultasPaciente',
 
     startLoading: '[ui] Start Loading',
     finishLoading: '[ui] Finish Loading',

@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { fetchConToken } from "../helpers/fetch";
 import { types } from "../types/types";
+import { finishLoading, startLoading } from "./ui";
 
 export const startFinalizarCita = (id) => {
     return async (dispatch) => {
@@ -39,3 +40,25 @@ export const finalizarConsulta = (consulta) => {
         }
     }
 }
+
+export const startGetConsultasPaciente = (id_paciente) => {
+    return async (dispatch) => {
+        try {
+            const resp = await fetchConToken(`paciente/getConsultas/${id_paciente}`, {}, "GET");
+            const body = await resp.json();
+            dispatch(startLoading());
+            if (body.ok) {
+                dispatch(getConsultasPaciente(body.consultas));
+                dispatch(finishLoading());
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}
+
+const getConsultasPaciente = (consultas) =>({
+    type: types.getConsultas,
+    payload: consultas
+});
