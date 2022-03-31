@@ -1,12 +1,12 @@
 const express = require('express');
-const { crearPaciente, obtenerPacientes, obtenerHistorialPaciente, nuevoServicioPaciente, nuevaConsultaPaciente, obtenerMedicos, obtenerAgendaDoctor, nuevaCitaAgenda, eliminarCitaAgenda, obtenerAgendaCompleta, obtenerPaciente, editarCitaAgenda, finalizarCita } = require('../controllers/pacienteController');
+const { crearPaciente, obtenerPacientes, obtenerHistorialPaciente, nuevoServicioPaciente, nuevaConsultaPaciente, obtenerMedicos, obtenerAgendaDoctor, nuevaCitaAgenda, eliminarCitaAgenda, obtenerAgendaCompleta, obtenerPaciente, editarCitaAgenda, finalizarCita, obtenerConsultasPaciente } = require('../controllers/pacienteController');
 const { validarJWT } = require('../middlewares/validarJWT');
 
 const routerPaciente = express.Router();
 
 routerPaciente.use(validarJWT);
 
-routerPaciente.post("/new",crearPaciente);
+routerPaciente.post("/new", crearPaciente);
 
 routerPaciente.get("/getPacientes", obtenerPacientes);
 
@@ -16,15 +16,17 @@ routerPaciente.get("/getHistorial/:id", obtenerHistorialPaciente);
 
 routerPaciente.post("/nuevoServicio", nuevoServicioPaciente);
 
-routerPaciente.post("/nuevaConsulta",nuevaConsultaPaciente)
+routerPaciente.post("/nuevaConsulta", nuevaConsultaPaciente)
 
-routerPaciente.get("/getMedicos",obtenerMedicos);
+routerPaciente.get("/getConsultas/:id_paciente", obtenerConsultasPaciente)
 
-routerPaciente.get("/getAgendaDoctor/:idDoctor",obtenerAgendaDoctor);
+routerPaciente.get("/getMedicos", obtenerMedicos);
 
-routerPaciente.get("/getAgendaCompleta",obtenerAgendaCompleta);
+routerPaciente.get("/getAgendaDoctor/:idDoctor", obtenerAgendaDoctor);
 
-routerPaciente.post("/nuevaCita",nuevaCitaAgenda);
+routerPaciente.get("/getAgendaCompleta", obtenerAgendaCompleta);
+
+routerPaciente.post("/nuevaCita", nuevaCitaAgenda);
 
 routerPaciente.delete("/borrarCita/:id", eliminarCitaAgenda);
 
@@ -32,6 +34,6 @@ routerPaciente.put("/editarCita/:id", editarCitaAgenda);
 
 routerPaciente.post("/finalizarCita/:id", finalizarCita);
 
-module.exports ={
+module.exports = {
     routerPaciente
 }

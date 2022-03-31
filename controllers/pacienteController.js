@@ -140,6 +140,40 @@ const nuevaConsultaPaciente = async (req, res) => {
     }
 };
 
+const obtenerConsultasPaciente = async (req, res) => {
+    const { id_paciente } = req.params;
+
+    try {
+        const consultas = await db.query(
+            `
+                SELECT c.id, c.sintomas, c.diagnostico, c.receta, c.id_paciente, 
+                concat_ws(' ',p.nombre, p.ap_paterno, p.ap_materno) as nombre_paciente , 
+                c.id_empleado, concat(' ',e.nombre,e.ap_paterno) as nombre_medico,
+                c.f_consulta
+                FROM consultas as c 
+                JOIN pacientes as p ON(p.id = c.id_paciente)
+                JOIN empleados as e ON(e.id = c.id_empleado)
+                WHERE c.id_paciente = "${id_paciente}";
+            `,
+            {
+                type: db.QueryTypes.SELECT
+            }
+        );
+
+        return res.json({
+            ok: true,
+            consultas
+        });
+        
+    } catch (error) {
+        return res.json({
+            ok: false,
+            msg: error,
+        });
+    }
+};
+
+
 const obtenerMedicos = async (req, res) => {
     try {
         const infoUser = await db.query(
@@ -328,6 +362,7 @@ module.exports = {
     obtenerAgendaDoctor,
     obtenerAgendaCompleta,
     nuevaCitaAgenda,
+    obtenerConsultasPaciente,
     eliminarCitaAgenda,
     editarCitaAgenda,
     obtenerPaciente,
