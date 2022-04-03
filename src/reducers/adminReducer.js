@@ -2,7 +2,7 @@ import { types } from "../types/types";
 
 const initial = {
     users: [],
-    activeUser: null,
+    activeUser: {},
     ingresosAdmin: [],
     pacientes: [],
     historialPaciente: [],
@@ -14,7 +14,7 @@ export const adminReducer = (state = initial, action) => {
         case types.getUsers:
             return {
                 ...state,
-                users: [...action.payload],
+                users: action.payload,
             };
 
         case types.cleanAdmin:
@@ -28,11 +28,10 @@ export const adminReducer = (state = initial, action) => {
                 users: [...state.users, action.payload],
             };
 
-        case types.searchUser:
-            const aux = state.users.filter((u) => u.id === action.payload);
+        case types.activeUser:
             return {
                 ...state,
-                activeUser: aux[0],
+                activeUser: action.payload,
             };
 
         case types.cleanActiveUser:
@@ -81,7 +80,7 @@ export const adminReducer = (state = initial, action) => {
             return{
                 ...state,
                 users: state.users.map(user =>{
-                    if(user.id == action.payload){
+                    if(user.id === action.payload){
                         user.estado = "Inactivo"
                     }
                     return user;
@@ -91,7 +90,7 @@ export const adminReducer = (state = initial, action) => {
             return{
                 ...state,
                 users: state.users.map(user =>{
-                    if(user.id == action.payload){
+                    if(user.id === action.payload){
                         user.estado = "Activo"
                     }
                     return user;

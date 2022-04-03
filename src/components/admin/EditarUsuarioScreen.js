@@ -1,24 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { startUpdateUser } from "../../actions/admin";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
+import { startSetActiveUser, startUpdateUser } from "../../actions/admin";
 import { useForm } from "../../hooks/useForm";
+import { Date } from "../ui/Date";
+import { Box } from "@mui/system";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const EditarUsuarioScreen = () => {
+    const { id } = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { loading } = useSelector((state) => state.ui);
     const { activeUser } = useSelector((state) => state.admin);
-    const [formValues, handleFormValue] = useForm({
-        ...activeUser,
-        password: "",
-    });
+    const [f_nacimiento, setF_nacimiento] = useState(activeUser?.f_nacimiento);
+    const [formValues, handleFormValue, , setValues] = useForm({
+        nombre:"",
+        ap_paterno:"",
+        ap_materno:"",
+        f_nacimiento:"",
+        especialidad:"",
+        user:"",
+        password: ""
+    })
 
-    const handleSubmit = (e) => {
+    useEffect(() => {
+        dispatch(startSetActiveUser(id));
+    }, [])
+
+    useEffect(() => {
+        setValues({ ...activeUser, password: "" });
+        setF_nacimiento(activeUser?.f_nacimiento)
+    }, [activeUser])
+
+    const handleSubmit = async(e) => {
         e.preventDefault();
-        dispatch(startUpdateUser(formValues));
+        formValues.f_nacimiento = f_nacimiento;
+        const res = await dispatch(startUpdateUser(formValues));
+        if(res){
+            navigate('/admin/usuarios');
+        }
     };
 
 
-    if (activeUser === null) {
-        return <h1>No hay nada que mostrar</h1>;
+    if (loading) {
+        return <div className="loader">Loading...</div>;
     }
 
     return (
@@ -29,87 +55,100 @@ export const EditarUsuarioScreen = () => {
                         className="w-full grid grid-cols-2 auto-rows-auto gap-4"
                         onSubmit={handleSubmit}
                     >
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400 col-span-2"
-                            type="text"
-                            placeholder="Nombre"
+                        <TextField
+                            className="col-span-2"
+                            fullWidth
+                            id="outlined-basic1"
+                            label="Nombre"
+                            variant="outlined"
                             name="nombre"
-                            autoComplete="off"
                             onChange={handleFormValue}
-                            value={formValues.nombre}
-                            required="true"
+                            value={formValues?.nombre}
+                            autoComplete="off"
+                            required={true}
                         />
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            type="text"
-                            placeholder="Apellido Paterno"
+                        <TextField
+                            fullWidth
+                            id="outlined-basic2"
+                            label="Apellido Paterno"
+                            variant="outlined"
                             name="ap_paterno"
-                            autoComplete="off"
                             onChange={handleFormValue}
-                            value={formValues.ap_paterno}
-                            required="true"
+                            value={formValues?.ap_paterno}
+                            autoComplete="off"
+                            required={true}
                         />
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            type="text"
-                            placeholder="Apellido Materno"
+                        <TextField
+                            fullWidth
+                            id="outlined-basic3"
+                            label="Apellido Materno"
+                            variant="outlined"
                             name="ap_materno"
+                            onChange={handleFormValue}
+                            value={formValues?.ap_materno}
                             autoComplete="off"
-                            onChange={handleFormValue}
-                            value={formValues.ap_materno}
-                            required="true"
+                            required={true}
                         />
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            type="date"
-                            placeholder="Fecha de nacimiento"
-                            name="f_nacimiento"
-                            onChange={handleFormValue}
-                            value={formValues.f_nacimiento}
-                            required="true"
+                        <Date
+                            fecha={f_nacimiento}
+                            setFecha={setF_nacimiento}
+                            mensaje="Fecha de nacimiento"
                         />
-                        <select
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            name="especialidad"
-                            onChange={handleFormValue}
-                            value={formValues.especialidad}
-                            required="true"
-                        >
-                            <option value="">Especialidad o Rol</option>
-                            <option value="Admin">Admin</option>
-                            <option value="Doctor">Doctor</option>
-                            <option value="Recepcionista">Recepcionista</option>
-                        </select>
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            type="text"
-                            placeholder="Usuario"
-                            name="user"
-                            autoComplete="off"
-                            onChange={handleFormValue}
-                            value={formValues.user}
-                            required="true"
-                        />
-                        
-                        <input
-                            className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                            type="password"
-                            placeholder="Contraseña"
-                            name="password"
-                            autoComplete="off"
-                            onChange={handleFormValue}
-                            value={formValues.password}
-                            required="true"
-                        />
-                        
-                        <div className="flex justify-center col-span-2 h-16">
-                            <button
-                                className="block rounded-md p-4 bg-green-400 hover:bg-green-600"
-                                type="submit"
+                        <FormControl fullWidth>
+                            <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                label="Rol"
+                                onChange={handleFormValue}
+                                name="especialidad"
+                                value={formValues?.especialidad}
+                                required={true}
                             >
-                                Editar
-                            </button>
-                        </div>
+                                <MenuItem value={""}>Rol</MenuItem>
+                                <MenuItem value={"Admin"}>Admin</MenuItem>
+                                <MenuItem value={"Doctor"}>Doctor</MenuItem>
+                                <MenuItem value={"Recepcionista"}>Recepcionista</MenuItem>
+                            </Select>
+                        </FormControl>
+                        <TextField
+                            fullWidth
+                            id="outlined-basic4"
+                            label="Usuario"
+                            variant="outlined"
+                            name="user"
+                            onChange={handleFormValue}
+                            value={formValues?.user}
+                            autoComplete="off"
+                            required={true}
+                        />
+                        <TextField
+                            fullWidth
+                            type="password"
+                            id="outlined-basic5"
+                            label="Contraseña"
+                            variant="outlined"
+                            name="password"
+                            onChange={handleFormValue}
+                            value={formValues?.password}
+                            autoComplete="off"
+                            required={true}
+
+                        />
+                        <Box
+                            textAlign="center"
+                            className="col-span-2"
+                            mt={1}
+                        >
+                            <Button
+                                mt={2}
+                                variant="contained"
+                                type="submit"
+                                onClick={handleSubmit}
+                            >
+                                Editar Paciente
+                            </Button>
+                        </Box>
                     </form>
                 </div>
             </div>

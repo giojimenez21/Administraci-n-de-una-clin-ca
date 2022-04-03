@@ -10,7 +10,7 @@ export const types = {
     getUsers:'[admin] get users',
     cleanAdmin: '[admin] clean info',
     registerUser:'[admin] registerUser',
-    searchUser: '[admin] SearchUser',
+    activeUser: '[admin] ActiveUser',
     cleanActiveUser:'[admin] clean ActiveUser',
     getInfoAdmin:'[admin] getInfoAdmin',
     getIngresosAdmin: '[admin] getIngresosAdmin',

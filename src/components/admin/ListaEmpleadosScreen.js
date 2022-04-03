@@ -18,9 +18,6 @@ export const ListaEmpleadosScreen = () => {
         dispatch(startGetUsers());
     }, [dispatch]);
 
-    const handleActiveUser = (id) => {
-        dispatch(setActiveUser(Number(id)));
-    };
 
     const lockUser = (id, tipoAccion) => {
         Swal.fire({
@@ -122,7 +119,7 @@ export const ListaEmpleadosScreen = () => {
                                         return (
                                             <tr
                                                 key={user.id}
-                                                className={`hover:bg-gray-200 ${user.estado == "Inactivo" ? "bg-red-400 text-white hover:text-black" : ""}`}
+                                                className={`hover:bg-gray-200 ${user.estado === "Inactivo" ? "bg-red-400 text-white hover:text-black" : ""}`}
                                             >
                                                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 ">
                                                     {user.user}
@@ -148,11 +145,6 @@ export const ListaEmpleadosScreen = () => {
                                                 <td className="text-center">
                                                     <Link
                                                         to={`/admin/editar/${user.id}`}
-                                                        onClick={() =>
-                                                            handleActiveUser(
-                                                                user.id
-                                                            )
-                                                        }
                                                     >
                                                         <FontAwesomeIcon
                                                             className={`mx-2 ${user.estado === "Activo" ? "text-blue-500" : "text-white"}`}

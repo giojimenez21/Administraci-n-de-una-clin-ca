@@ -56,11 +56,13 @@ const registerUser = (userFinal) => ({
 export const startSetActiveUser = (id) => {
     return async (dispatch) => {
         try {
+            dispatch(startLoading());
             const resp = await fetchConToken(`admin/editUser/${id}`, {}, "GET");
             const body = await resp.json();
 
             if (body.ok) {
                 dispatch(setActiveUser(body.usuario));
+                dispatch(finishLoading());
             }
         } catch (error) {
             console.log(error);
@@ -69,7 +71,7 @@ export const startSetActiveUser = (id) => {
 };
 
 export const setActiveUser = (usuario) => ({
-    type: types.searchUser,
+    type: types.activeUser,
     payload: usuario,
 });
 
@@ -86,6 +88,7 @@ export const startUpdateUser = (user) => {
             if (body.ok) {
                 Swal.fire("Exito", "Usuario actualizado", "success");
                 dispatch(cleanActiveUser());
+                return body.ok;
             } else {
                 Swal.fire("Error", body.msg, "error");
             }

@@ -80,7 +80,6 @@ export const ModalEvent = () => {
             if (Object.keys(activeEvent).length === 0) {
                 dispatch(startAddServicePaciente({ fechaInicio, fechaFinal, medico, servicio, paciente }, { fecha, paciente, medico, servicio }));
             } else {
-                console.log('actualizado');
                 const { id, title } = activeEvent;
                 dispatch(startUpdateEvent({ id, title, fechaInicio, fechaFinal, medico, servicio }));
             }

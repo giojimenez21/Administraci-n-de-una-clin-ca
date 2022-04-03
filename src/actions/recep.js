@@ -12,6 +12,8 @@ export const startCrearPaciente = (paciente) => {
 
             if (body.ok) {
                 dispatch(crearPaciente(body.paciente));
+                const res = {...body};
+                return res;
             }
         } catch (error) {
             console.log(error);
@@ -68,7 +70,7 @@ const getInfoPaciente = (paciente) => ({
     payload: paciente
 });
 
-export const clearActivePaciente = () =>({
+export const clearActivePaciente = () => ({
     type: types.clearActivePaciente
 });
 
