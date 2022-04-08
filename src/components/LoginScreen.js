@@ -5,6 +5,7 @@ import { useForm } from "../hooks/useForm";
 import { useDispatch } from "react-redux";
 import { startLogin } from "../actions/auth";
 import "../index.css";
+import { TextField } from "@mui/material";
 
 export const LoginScreen = () => {
     const dispatch = useDispatch();
@@ -22,33 +23,38 @@ export const LoginScreen = () => {
             <div className="container mx-auto w-full h-full flex justify-center items-center">
                 <div className="w-3/4 md:w-1/3 h-96 min-h-96">
                     <form
-                        className="w-full h-full bg-white px-10 py-4 rounded-md shadow-lg text-center"
+                        className="w-full h-full bg-white px-10 py-4 rounded-md shadow-lg text-center gap-2 grid auto-rows-auto"
                         onSubmit={handleLogin}
                     >
                         <FontAwesomeIcon
-                            className="text-7xl text-blue-400 m-5"
+                            className="text-7xl text-blue-400 m-5 mx-auto"
                             icon={faStethoscope}
                         />
 
-                        <input
-                            className="w-full focus:outline-blue-400 p-2 rounded mb-8 border border-gray-300"
-                            type="text"
-                            placeholder="Usuario"
+                        <TextField
+                            fullWidth
+                            id="outlined-basic1"
+                            label="Usuario"
+                            variant="outlined"
                             name="user"
                             onChange={handleformValues}
                             autoComplete="off"
+                            required={true}
                         />
-
-                        <input
-                            className="w-full focus:outline-blue-400 p-2 rounded mb-8 border border-gray-300"
+                        <TextField
+                            fullWidth
                             type="password"
-                            placeholder="Contraseña"
+                            id="outlined-basic2"
+                            label="Contraseña"
+                            variant="outlined"
                             name="password"
                             onChange={handleformValues}
+                            autoComplete="off"
+                            required={true}
                         />
 
                         <button
-                            className="w-28 p-3 bg-blue-400 rounded text-white font-semibold hover:bg-blue-500"
+                            className="w-28 p-3 bg-blue-400 rounded text-white font-semibold hover:bg-blue-500 mx-auto"
                             type="submit"
                         >
                             Entrar

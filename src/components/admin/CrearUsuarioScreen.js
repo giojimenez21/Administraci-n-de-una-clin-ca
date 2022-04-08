@@ -1,20 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { startRegister } from "../../actions/admin";
 import { useForm } from "../../hooks/useForm";
+import { Date } from "../ui/Date";
+import moment from "moment";
+import { Box } from "@mui/system";
 
 export const CrearUsuarioScreen = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [formValue, handleFormValue] = useForm();
+    const [fecha_nacimiento, setfecha_nacimiento] = useState(moment());
 
     const {
         name,
         apellido1,
         apellido2,
-        fecha_nacimiento,
         espec,
         usuario,
         contraseña,
@@ -26,7 +30,6 @@ export const CrearUsuarioScreen = () => {
             name === "" ||
             apellido1 === "" ||
             apellido2 === "" ||
-            fecha_nacimiento === "" ||
             espec === "" ||
             usuario === "" ||
             contraseña === ""
@@ -35,84 +38,103 @@ export const CrearUsuarioScreen = () => {
             return;
         }
 
-        dispatch(startRegister(formValue));
-        Swal.fire('Usuario Creado','El usuario fue creado de manera correcta','success')
-            .then(result =>{
+        dispatch(startRegister({ ...formValue, fecha_nacimiento }));
+        Swal.fire('Usuario Creado', 'El usuario fue creado de manera correcta', 'success')
+            .then(result => {
                 navigate("/admin/usuarios");
             });
-        
+
     };
     return (
         <div className="flex justify-center items-center my-5">
             <div className="w-full sm:w-1/2  bg-white rounded-md p-5 border border-gray-200 shadow-lg">
                 <form className="w-full grid grid-cols-2 auto-rows-auto gap-4" onSubmit={handleSubmit}>
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400 col-span-2"
-                        type="text"
-                        placeholder="Nombre"
+                    <TextField
+                        className="col-span-2"
+                        fullWidth
+                        id="outlined-basic2"
+                        label="Nombre"
+                        variant="outlined"
                         name="name"
-                        autoComplete="off"
                         onChange={handleFormValue}
+                        autoComplete="off"
+                        required={true}
                     />
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                        type="text"
-                        placeholder="Apellido Paterno"
+                    <TextField
+                        fullWidth
+                        id="outlined-basic2"
+                        label="Apellido Paterno"
+                        variant="outlined"
                         name="apellido1"
-                        autoComplete="off"
                         onChange={handleFormValue}
+                        autoComplete="off"
+                        required={true}
                     />
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                        type="text"
-                        placeholder="Apellido Materno"
+                    <TextField
+                        fullWidth
+                        id="outlined-basic2"
+                        label="Apellido Materno"
+                        variant="outlined"
                         name="apellido2"
+                        onChange={handleFormValue}
                         autoComplete="off"
-                        onChange={handleFormValue}
+                        required={true}
                     />
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                        type="date"
-                        placeholder="Fecha de nacimiento"
-                        name="fecha_nacimiento"
-                        onChange={handleFormValue}
+                    <Date
+                        fecha={fecha_nacimiento}
+                        setFecha={setfecha_nacimiento}
+                        mensaje="Fecha de nacimiento"
                     />
-                    <select
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                        name="espec"
-                        onChange={handleFormValue}
-                    >
-                        <option value="">Especialidad o Rol</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Doctor">Doctor</option>
-                        <option value="Recepcionista">Recepcionista</option>
-                    </select>
-
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
-                        type="text"
-                        placeholder="Usuario"
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Sexo</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            label="Rol"
+                            onChange={handleFormValue}
+                            name="espec"
+                            required={true}
+                        >
+                            <MenuItem value={"Admin"}>Admin</MenuItem>
+                            <MenuItem value={"Doctor"}>Doctor</MenuItem>
+                            <MenuItem value={"Recepcionista"}>Recepcionista</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <TextField
+                        fullWidth
+                        id="outlined-basic2"
+                        label="Usuario"
+                        variant="outlined"
                         name="usuario"
-                        autoComplete="off"
                         onChange={handleFormValue}
+                        autoComplete="off"
+                        required={true}
                     />
-                    <input
-                        className="block border border-gray-400 w-full rounded-md p-4 focus:outline-none focus:outline-blue-400"
+                    <TextField
+                        fullWidth
                         type="password"
-                        placeholder="Contraseña"
+                        id="outlined-basic2"
+                        label="Contraseña"
+                        variant="outlined"
                         name="contraseña"
-                        autoComplete="off"
                         onChange={handleFormValue}
+                        autoComplete="off"
+                        required={true}
                     />
 
-                    <div className="flex justify-center col-span-2">
-                        <button
-                            className="block rounded-md p-4 bg-green-400 text-white font-semibold hover:bg-green-600"
+                    <Box
+                        textAlign="center"
+                        className="col-span-2"
+                        mt={1}
+                    >
+                        <Button
+                            mt={2}
+                            variant="contained"
                             type="submit"
                         >
-                            Crear usuario
-                        </button>
-                    </div>
+                            Crear Usaurio
+                        </Button>
+                    </Box>
                 </form>
             </div>
         </div>

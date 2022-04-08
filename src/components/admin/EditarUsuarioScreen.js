@@ -26,7 +26,7 @@ export const EditarUsuarioScreen = () => {
 
     useEffect(() => {
         dispatch(startSetActiveUser(id));
-    }, [])
+    }, [dispatch, id])
 
     useEffect(() => {
         setValues({ ...activeUser, password: "" });
@@ -146,7 +146,7 @@ export const EditarUsuarioScreen = () => {
                                 type="submit"
                                 onClick={handleSubmit}
                             >
-                                Editar Paciente
+                                Editar Usuario
                             </Button>
                         </Box>
                     </form>
